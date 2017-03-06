@@ -49,6 +49,7 @@ class App extends Component {
     const startX = x;
     const startY = y;
     console.log(startX, startY, color);
+    if(!isWhite(color)) return;
     let right, left, top, bottom;
     // Find left border
     for(let x = 0; x < 30; x++) {
