@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 import _                    from 'underscore'
 
-export const SIZE = 16
-
 const style = {
   padding: 0,
   margin: 0,
   border: 'none',
-  // borderWidth: 2,
   background: 'lightgrey',
-  width: SIZE,
-  height: SIZE,
   position: 'absolute',
   textAlign: 'center',
   textTransform: 'uppercase',
@@ -32,8 +27,10 @@ export class CharInput extends Component {
   }
 
   render() {
-    style.top  = this.props.top;
-    style.left = this.props.left;
+    style.width  = this.props.size;
+    style.height = this.props.size;
+    style.top    = this.props.top;
+    style.left   = this.props.left;
     return (
       <input onKeyUp={ this.keyUp } autoFocus maxLength="1" style={ style } />
     );

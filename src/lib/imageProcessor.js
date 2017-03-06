@@ -1,10 +1,9 @@
 class ImageProcessor {
-  constructor(img) {
-    this.canvas = document.createElement('canvas');
-    this.canvas.width  = img.width;
-    this.canvas.height = img.height;
-    this.ctx = this.canvas.getContext('2d')
-    this.ctx.drawImage(img, 0, 0, img.width, img.height);
+  constructor(document) {
+    console.log(document);
+
+    const img = document.getElementById('img');
+
     console.log('w: %s h: %s', this.canvas.width, this.canvas.height);
     console.log(img);
     console.log(this.canvas)
@@ -18,7 +17,7 @@ class ImageProcessor {
 
   getPixelData(x, y) {
     console.log({x, y});
-    const pixelData = this.ctx.getImageData(x, y, 1, 1)
+    const pixelData = this.ctx.getImageData(x, y, 1, 1).data
     console.log(pixelData);
   }
 
