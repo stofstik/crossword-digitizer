@@ -22,7 +22,7 @@ class App extends Component {
     img.src     = 'crypto.png';
     img.onload  = () => {
       this.ctx.drawImage(img, 0, 0);
-      this.findSquareSize();
+      this.findCenter(268, 178);
     }
   }
 
@@ -137,18 +137,10 @@ class App extends Component {
   }
 
   onClick(e) {
-    // Snap!
-    this.findSquareSize(e.clientY)
-    console.log(this.state);
+    let { x, y } = this.findCenter(e.clientX, e.clientY);
 
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
-    let x = e.clientX
-    let y = e.clientY
-    console.log(x)
-
-    x = x -  this.state.size / 2
-    y = y -  this.state.size / 2
+    x -= ( this.state.size / 2 )
+    y -= ( this.state.size / 2 )
 
     const field = { x: x, y: y }
     // Check if obj is in array
@@ -168,9 +160,14 @@ class App extends Component {
   }
 
   drawFields() {
-    return this.state.inputFields.map( (f, i) => {
-      return <CharInput deleteField={this.deleteField} key={i} top={f.y} left={f.x} size={this.state.size} />
-    } );
+    return this.state.inputFields.map((f, i) => {
+      return <CharInput 
+        deleteField={ this.deleteField } 
+        key={ i }
+        top={ f.y }
+        left={ f.x }
+        size={ this.state.size } />
+    });
   }
 
   render() {
