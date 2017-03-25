@@ -43,6 +43,9 @@ class App extends Component {
     return bool;
   }
 
+  /*
+   * Finds each edge of a square
+   */
   square(x, y) {
     let color = this.ctx.getImageData(x, y, 1, 1).data;
     if(!this.isWhite(color)) {
@@ -52,16 +55,7 @@ class App extends Component {
     const startX = x;
     const startY = y;
     let right, left, top, bottom;
-    // Find left border
-    for(let x = 0; x < 30; x++) {
-      const pos = startX - x;
-      color = this.ctx.getImageData(pos, startY, 1, 1).data;
-      if(!this.isWhite(color)) {
-        left = pos;
-        break;
-      }
-    }
-    // Find right border
+    // Find right border first
     for(let x = 0; x < 30; x++) {
       const pos = startX + x;
       color = this.ctx.getImageData(pos, startY, 1, 1).data;
@@ -70,21 +64,30 @@ class App extends Component {
         break;
       }
     }
-    // Find top border
-    for(let y = 0; y < 30; y++) {
-      const pos = startY - y;
-      color = this.ctx.getImageData(startX, pos, 1, 1).data;
-      if(!this.isWhite(color)) {
-        top = pos;
-        break;
-      }
-    }
-    // Find bottom border
+    // Then find bottom border using right border's pos
     for(let y = 0; y < 30; y++) {
       const pos = startY + y;
       color = this.ctx.getImageData(startX, pos, 1, 1).data;
       if(!this.isWhite(color)) {
         bottom = pos;
+        break;
+      }
+    }
+    // Then left using bottom right
+    for(let x = 0; x < 30; x++) {
+      const pos = right - 1 - x;
+      color = this.ctx.getImageData(pos, bottom - 1, 1, 1).data;
+      if(!this.isWhite(color)) {
+        left = pos;
+        break;
+      }
+    }
+    // And lastly top using bottom right
+    for(let y = 0; y < 30; y++) {
+      const pos = bottom - 1 - y;
+      color = this.ctx.getImageData(right - 1, pos, 1, 1).data;
+      if(!this.isWhite(color)) {
+        top = pos;
         break;
       }
     }
