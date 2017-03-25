@@ -49,7 +49,7 @@ class App extends Component {
   square(x, y) {
     let color = this.ctx.getImageData(x, y, 1, 1).data;
     if(!this.isWhite(color)) {
-      console.log('Not a white pixel : (');
+      console.info('Not a white pixel : (');
       return;
     }
     const startX = x;
@@ -96,7 +96,7 @@ class App extends Component {
     const centerX = left + width  / 2;
     const centerY = top  + height / 2;
     if(width > 50 || height > 50 || !height || !width) {
-      console.log('Could not find center');
+      console.warn('Could not find center');
       return;
     }
     return { x: centerX, y: centerY, size: width - 2 }
