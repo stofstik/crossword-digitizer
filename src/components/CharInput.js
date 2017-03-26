@@ -3,15 +3,23 @@ import React, { Component } from 'react';
 export class CharInput extends Component {
  constructor(props) {
     super(props);
-    this.onKeyDown = this.onKeyDown.bind(this);
-    this.onKeyUp   = this.onKeyUp.bind(this);
+    this.onKeyPress = this.onKeyPress.bind(this);
+    this.focus      = this.focus.bind(this);
   }
 
-  onKeyDown(e) {
+  componentDidMount() {
+    if(this.props.hasFocus) {
+      console.log('set focus to', this.props.left, this.props.top)
+      this.focus();
+    }
   }
 
-  onKeyUp(e) {
-    this.props.onKeyUp(e, this.props.left, this.props.top, this.props.size);
+  focus() {
+    this.textInput.focus();
+  }
+
+  onKeyPress(e) {
+    this.props.onKeyPress( e, this.props.left, this.props.top );
   }
 
   render() {
@@ -22,13 +30,13 @@ export class CharInput extends Component {
       left:   this.props.left,
     }
     return (
-      <input 
-        className="char-input" 
-        onKeyUp={ this.onKeyUp } 
-        onKeyDown={ this.onKeyDown } 
+      <input
+        className="char-input"
+        type="text"
+        ref={ (input) => this.textInput = input }
+        onKeyPress={ this.onKeyPress }
         style={ style }
-        maxLength="1" 
-        autoFocus 
+        maxLength="1"
       />
     );
   }

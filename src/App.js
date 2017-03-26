@@ -3,24 +3,22 @@ import React, { Component } from 'react';
 import './App.css';
 import { CharInput } from './components/CharInput';
 import { isWhite } from './lib/color-stuff'
-import Field from './lib/field'
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputFields: [],
+      fields: [],
       size: 20,
     };
     this.onClick = this.onClick.bind(this);
-    this.onKeyUp = this.onKeyUp.bind(this);
+    this.onKeyPress = this.onKeyPress.bind(this);
   }
 
   componentDidMount() {
     this.canvas = document.getElementById('canvas');
     this.ctx    = this.canvas.getContext('2d');
-    const img   = new Image();
-    img.src     = 'crypto.png';
+    const img   = new Image(); img.src     = 'crypto.png';
     img.onload  = () => {
       this.canvas.width  = img.width;
       this.canvas.height = img.height;
@@ -111,68 +109,92 @@ class App extends Component {
     x = Math.round( x - this.state.size / 2 )
     y = Math.round( y - this.state.size / 2 )
 
-    const field = new Field(x, y);
-    // Check if obj is in array
-    const exists = this.state.inputFields.find((f) => {
-      return JSON.stringify({ x: f.x, y: f.y }) === JSON.stringify({ x: field.x, y: field.y });
-    })
+    const key = `${x}:${y}`
+    // Set focus to field if it already exists
+    let exists = false;
+    this.state.fields.map((f) => {
+      if(f.key === key) {
+        exists = true;
+        // Found field with this key, set focus to true and all others to false
+        this.setState(prevState => ({
+          fields: prevState.fields.map((f) => {
+            if(f.key = key) {
+              f.hasFocus = true;
+            } else {
+              f.hasFocus = false;
+            }
+            return f;
+          })
+        }));
+      }
+    });
     if(exists) {
       console.info('Exists')
       return;
     }
+    const field = { key: key, x: x, y: y, hasFocus: true }
     this.setState(prevState => ({
-      inputFields: prevState.inputFields.concat(field)
-    }))
+      fields: prevState.fields.map((f) => {
+        f.hasFocus = false;
+        return f;
+      }).concat(field)
+    }));
   }
 
-  onKeyUp(e, x, y, size) {
+  onKeyPress(e, x, y) {
+    console.log(e.key);
     // Pressed backspace, remove input field
-    console.log(x, y)
-    if(e.keyCode === 8) {
-      // console.log(this.state.inputFields);
+    if(e.key === 'Backspace') {
+      // console.log(this.state.charInputs);
       // this.setState(prevState => ({
-        // inputFields: prevState.inputFields.filter((f) => {
+        // charInputs: prevState.charInputs.filter((f) => {
           // const currentField = f.x !== x || f.y !== y
           // return currentField
         // })
       // }), () => {
-        // console.log(this.state.inputFields);
+        // console.log(this.state.charInputs);
       // });
       // return;
     }
     // Pressed Enter, add input field below
-    if(e.keyCode === 13) {
+    if(e.key === 'Enter') {
       e.preventDefault();
-      this.placeField(x, y + size * 2)
+      this.placeField(x, y + this.state.size * 2)
       return;
     }
-    if(e.keyCode === 32) {
+    // Pressed Space, add input field right
+    if(e.key === ' ') {
       e.preventDefault();
-      this.placeField(x + size * 2, y)
+      this.placeField(x + this.state.size * 2, y)
       return;
     }
   }
 
-  drawFields() {
-    return this.state.inputFields.map((f, i) => {
-      return <CharInput 
-        onKeyUp={ this.onKeyUp } 
-        key={ i }
-        top={ f.y }
-        left={ f.x }
-        size={ this.state.size } />
+  renderCharInputs() {
+    console.log(this.state)
+    return this.state.fields.map((f) => {
+      return (
+        <CharInput
+          onKeyPress={ this.onKeyPress }
+          key={ f.key }
+          top={ f.y }
+          left={ f.x }
+          hasFocus={ f.hasFocus }
+          size={ this.state.size } />
+      )
     });
   }
 
   render() {
+    console.log('render called');
     return (
       <div className="App">
-        <canvas 
+        <canvas
           className="canvas"
-          id="canvas" 
-          onClick={ this.onClick } 
+          id="canvas"
+          onClick={ this.onClick }
         />
-        { this.drawFields() }        
+        { this.renderCharInputs() }
       </div>
     );
   }
