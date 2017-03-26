@@ -3,7 +3,11 @@ import React, { Component } from 'react';
 export class CharInput extends Component {
  constructor(props) {
     super(props);
-    this.onKeyUp = this.onKeyUp.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
+    this.onKeyUp   = this.onKeyUp.bind(this);
+  }
+
+  onKeyDown(e) {
   }
 
   onKeyUp(e) {
@@ -21,6 +25,7 @@ export class CharInput extends Component {
       <input 
         className="char-input" 
         onKeyUp={ this.onKeyUp } 
+        onKeyDown={ this.onKeyDown } 
         style={ style }
         maxLength="1" 
         autoFocus 
