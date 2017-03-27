@@ -111,34 +111,34 @@ class App extends Component {
 
     const key = `${x}:${y}`
     // Set focus to field if it already exists
-    let exists = false;
-    this.state.fields.map((f) => {
-      if(f.key === key) {
-        exists = true;
-        // Found field with this key, set focus to true and all others to false
-        this.setState(prevState => ({
-          fields: prevState.fields.map((f) => {
-            if(f.key = key) {
-              f.hasFocus = true;
-            } else {
-              f.hasFocus = false;
-            }
-            return f;
-          })
-        }));
-      }
+    const existingField = this.state.fields.find((f) => {
+      return f.key === key;
     });
-    if(exists) {
+    console.log(existingField);
+    if(existingField) {
       console.info('Exists')
+      this.setFocusByKey(existingField.key)
       return;
     }
+    console.log('placing new field')
     const field = { key: key, x: x, y: y, hasFocus: true }
     this.setState(prevState => ({
-      fields: prevState.fields.map((f) => {
-        f.hasFocus = false;
-        return f;
-      }).concat(field)
+      fields: prevState.fields.concat(field)
     }));
+  }
+
+  setFocusByKey(key, cb) {
+    this.setState(prevState => ({
+      fields: prevState.fields.map((f) => {
+        if(f.key === key) {
+          f.hasFocus = true;
+        } else {
+          f.hasFocus = false;
+        }
+        console.log(f)
+        return f;
+      })
+    }), cb);
   }
 
   onKeyPress(e, x, y) {

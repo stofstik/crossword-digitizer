@@ -16,8 +16,8 @@
   margin:  0;
   border:  none;
   font-weight: bold;
-  /* background: rgba(0, 0, 0, 0.0); */
-  background: #ddd;
+  background: rgba(0, 0, 0, 0.0);
+  /* background: #ddd; */
   position:   absolute;
   text-align:  center;
   text-transform: uppercase;

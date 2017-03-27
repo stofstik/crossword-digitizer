@@ -8,6 +8,12 @@ export class CharInput extends Component {
   }
 
   componentDidMount() {
+    console.log('mounted!');
+    this.focus();
+  }
+
+  componentDidUpdate() {
+    console.log('updated!');
     if(this.props.hasFocus) {
       console.log('set focus to', this.props.left, this.props.top)
       this.focus();
