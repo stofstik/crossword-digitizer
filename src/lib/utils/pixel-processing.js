@@ -1,8 +1,8 @@
 /*
    * Finds each edge of a square
    */
-export function square(x, y) {
-    let color = this.ctx.getImageData(x, y, 1, 1).data
+export function findSquare(ctx, x, y) {
+    let color = ctx.getImageData(x, y, 1, 1).data
     if(!isWhite(color)) {
       console.info('Not a white pixel : (')
       return
@@ -13,7 +13,7 @@ export function square(x, y) {
     // Find right border first
     for(let x = 0; x < 30; x++) {
       const pos = startX + x
-      color = this.ctx.getImageData(pos, startY, 1, 1).data
+      color = ctx.getImageData(pos, startY, 1, 1).data
       if(!isWhite(color)) {
         right = pos
         break
@@ -22,7 +22,7 @@ export function square(x, y) {
     // Then find bottom border using right border's pos
     for(let y = 0; y < 30; y++) {
       const pos = startY + y
-      color = this.ctx.getImageData(startX, pos, 1, 1).data
+      color = ctx.getImageData(startX, pos, 1, 1).data
       if(!isWhite(color)) {
         bottom = pos
         break
@@ -35,7 +35,7 @@ export function square(x, y) {
     // Then left using bottom right
     for(let x = 0; x < 30; x++) {
       const pos = right - 1 - x
-      color = this.ctx.getImageData(pos, bottom - 1, 1, 1).data
+      color = ctx.getImageData(pos, bottom - 1, 1, 1).data
       if(!isWhite(color)) {
         left = pos
         break
@@ -44,7 +44,7 @@ export function square(x, y) {
     // And lastly top using bottom right
     for(let y = 0; y < 30; y++) {
       const pos = bottom - 1 - y
-      color = this.ctx.getImageData(right - 1, pos, 1, 1).data
+      color = ctx.getImageData(right - 1, pos, 1, 1).data
       if(!isWhite(color)) {
         top = pos
         break

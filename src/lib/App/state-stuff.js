@@ -1,5 +1,7 @@
+import { findSquare } from '../utils/pixel-processing'
+
 export function placeField(canvasX, canvasY) {
-  const square = this.square(canvasX, canvasY)
+  const square = findSquare(this.ctx, canvasX, canvasY)
   if (!square) return
   if (!this.state.size) {
     this.setState( { size: square.size } )

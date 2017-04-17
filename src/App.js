@@ -4,11 +4,10 @@ import React, { Component } from 'react'
 import { CharInput }        from './components/CharInput'
 import { onKeyUp,
          onClick,
-         onCharClick }      from './lib/handlers'
+         onCharClick }      from './lib/App/handlers'
 import { placeField,
          setCharByKey,
-         setFocusByKey }    from './lib/state-stuff'
-import { square }           from './lib/pixel-processing'
+         setFocusByKey }    from './lib/App/state-stuff'
 import './App.css'
 
 class App extends Component {
@@ -18,16 +17,14 @@ class App extends Component {
       fields: [],
       size: 20,
     }
-    // Handlers
+    // App Handlers
     this.onKeyUp       = onKeyUp.bind(this)
     this.onClick       = onClick.bind(this)
     this.onCharClick   = onCharClick.bind(this)
-    // State changers
+    // App State changers
     this.placeField    = placeField.bind(this)
     this.setCharByKey  = setCharByKey.bind(this)
     this.setFocusByKey = setFocusByKey.bind(this)
-    // Pixel processing
-    this.square        = square.bind(this)
   }
 
   componentDidMount() {

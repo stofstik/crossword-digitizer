@@ -1,4 +1,4 @@
-import { validCharacters }  from './text-stuff'
+import { validCharacters }  from '../utils/text-stuff'
 
 export function onKeyUp(e, x, y) {
   const id = `${x}:${y}`
