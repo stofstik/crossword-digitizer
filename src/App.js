@@ -1,4 +1,5 @@
 import _                    from 'underscore'
+import store                from 'store'
 import React, { Component } from 'react'
 import { CharInput }        from './components/CharInput'
 import { onKeyUp }          from './lib/App/handlers'
@@ -12,7 +13,7 @@ import './App.css'
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = { fields: [] }
+    this.state = store.get('app-state') || { fields: [] }
     // App Handlers
     this.onKeyUp       = onKeyUp.bind(this)
     this.onClick       = onClick.bind(this)

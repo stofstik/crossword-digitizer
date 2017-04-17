@@ -7,6 +7,7 @@ export class CharInput extends Component {
     this.onKeyDown  = this.onKeyDown.bind(this)
     this.onKeyPress = this.onKeyPress.bind(this)
     this.onClick    = this.onClick.bind(this)
+    this.onChange   = this.onChange.bind(this)
     this.focus      = this.focus.bind(this)
   }
 
@@ -37,6 +38,10 @@ export class CharInput extends Component {
     e.preventDefault()
   }
 
+  onChange(e) {
+    e.preventDefault()
+  }
+
   onClick(e) {
     this.props.onClick( e, this.props.left, this.props.top )
   }
@@ -56,6 +61,7 @@ export class CharInput extends Component {
         onKeyUp={ this.onKeyUp }
         onKeyDown={ this.onKeyDown }
         onKeyPress={ this.onKeyPress }
+        onChange={ this.onChange }
         onClick={ this.onClick }
         value={ this.props.char }
         style={ style }
