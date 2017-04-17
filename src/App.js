@@ -2,12 +2,12 @@ import _                    from 'underscore'
 import store                from 'store'
 import React, { Component } from 'react'
 import { CharInput }        from './components/CharInput'
-import { onKeyUp,
-         onClick,
-         onCharClick }      from './lib/App/handlers'
-import { placeField,
-         setCharByKey,
-         setFocusByKey }    from './lib/App/state-stuff'
+import { onKeyUp }          from './lib/App/handlers'
+import { onClick }          from './lib/App/handlers'
+import { onCharClick }      from './lib/App/handlers'
+import { placeField }       from './lib/App/state-stuff'
+import { setCharByKey }     from './lib/App/state-stuff'
+import { setFocusByKey }    from './lib/App/state-stuff'
 import './App.css'
 
 class App extends Component {
@@ -30,8 +30,8 @@ class App extends Component {
   componentDidMount() {
     this.canvas = document.getElementById('canvas')
     this.ctx    = this.canvas.getContext('2d')
-	  const img   = new Image()
-	  img.src     = 'crypto.png'
+    const img   = new Image()
+    img.src     = 'crypto.png'
     img.onload  = () => {
       this.canvas.width  = img.width
       this.canvas.height = img.height
