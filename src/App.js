@@ -2,8 +2,13 @@ import _                    from 'underscore'
 import store                from 'store'
 import React, { Component } from 'react'
 import { CharInput }        from './components/CharInput'
-import { isWhite }          from './lib/color-stuff'
-import { validCharacters }  from './lib/text-stuff'
+import { onKeyUp,
+         onClick,
+         onCharClick }      from './lib/handlers'
+import { placeField,
+         setCharByKey,
+         setFocusByKey }    from './lib/state-stuff'
+import { square }           from './lib/pixel-processing'
 import './App.css'
 
 class App extends Component {
@@ -13,9 +18,16 @@ class App extends Component {
       fields: [],
       size: 20,
     }
-    this.onClick     = this.onClick.bind(this)
-    this.onCharClick = this.onCharClick.bind(this)
-    this.onKeyUp     = this.onKeyUp.bind(this)
+    // Handlers
+    this.onKeyUp       = onKeyUp.bind(this)
+    this.onClick       = onClick.bind(this)
+    this.onCharClick   = onCharClick.bind(this)
+    // State changers
+    this.placeField    = placeField.bind(this)
+    this.setCharByKey  = setCharByKey.bind(this)
+    this.setFocusByKey = setFocusByKey.bind(this)
+    // Pixel processing
+    this.square        = square.bind(this)
   }
 
   componentDidMount() {
@@ -28,183 +40,6 @@ class App extends Component {
       this.canvas.height = img.height
       this.ctx.drawImage(img, 0, 0, img.width, img.height)
     }
-  }
-
-  /*
-   * Finds each edge of a square
-   */
-  square(x, y) {
-    let color = this.ctx.getImageData(x, y, 1, 1).data
-    if(!isWhite(color)) {
-      console.info('Not a white pixel : (')
-      return
-    }
-    const startX = x
-    const startY = y
-    let right, left, top, bottom
-    // Find right border first
-    for(let x = 0; x < 30; x++) {
-      const pos = startX + x
-      color = this.ctx.getImageData(pos, startY, 1, 1).data
-      if(!isWhite(color)) {
-        right = pos
-        break
-      }
-    }
-    // Then find bottom border using right border's pos
-    for(let y = 0; y < 30; y++) {
-      const pos = startY + y
-      color = this.ctx.getImageData(startX, pos, 1, 1).data
-      if(!isWhite(color)) {
-        bottom = pos
-        break
-      }
-    }
-    if(!right || !bottom) {
-      console.warn('Could not find center')
-      return
-    }
-    // Then left using bottom right
-    for(let x = 0; x < 30; x++) {
-      const pos = right - 1 - x
-      color = this.ctx.getImageData(pos, bottom - 1, 1, 1).data
-      if(!isWhite(color)) {
-        left = pos
-        break
-      }
-    }
-    // And lastly top using bottom right
-    for(let y = 0; y < 30; y++) {
-      const pos = bottom - 1 - y
-      color = this.ctx.getImageData(right - 1, pos, 1, 1).data
-      if(!isWhite(color)) {
-        top = pos
-        break
-      }
-    }
-    const height   = bottom - top
-    const width    = right  - left
-    const centerX  = left   + width  / 2
-    const centerY  = top    + height / 2
-    const tooBig   = width > 50 || height > 50
-    const tooSmall = width < 10 || height < 10
-    if(tooBig || tooSmall || !height || !width) {
-      console.warn('Could not find center')
-      return
-    }
-    return { x: centerX, y: centerY, size: width - 2 }
-  }
-
-  onClick(e) {
-    const rect = this.canvas.getBoundingClientRect()
-    const canvasX = e.clientX - rect.left
-    const canvasY = e.clientY - rect.top
-    this.placeField(canvasX, canvasY)
-  }
-
-  placeField(canvasX, canvasY) {
-    const square = this.square(canvasX, canvasY)
-    if (!square) return
-    if (!this.state.size) {
-      this.setState( { size: square.size } )
-    }
-    let { x, y } = square
-
-    x = Math.round( x - this.state.size / 2 )
-    y = Math.round( y - this.state.size / 2 )
-
-    const key = `${x}:${y}`
-    // Set focus to field if it already exists
-    const existingField = this.state.fields.find((f) => {
-      return f.key === key
-    })
-    if(existingField) {
-      console.info('Exists')
-      this.setFocusByKey(existingField.key)
-      return
-    }
-    const field = { key: key, x: x, y: y, char: '', hasFocus: true }
-    this.setState(prevState => ({
-      fields: prevState.fields.concat(field)
-    }))
-  }
-
-  setCharByKey(key, char, cb) {
-    this.setState(prevState => ({
-      fields: prevState.fields.map((f) => {
-        if(f.key === key) {
-          f.char = char
-        }
-        return f
-      })
-    }), cb)
-  }
-
-  setFocusByKey(key, cb) {
-    this.setState(prevState => ({
-      fields: prevState.fields.map((f) => {
-        if(f.key === key) {
-          f.hasFocus = true
-        } else {
-          f.hasFocus = false
-        }
-        return f
-      })
-    }), cb)
-  }
-
-  onKeyUp(e, x, y) {
-    console.log(e.key)
-    console.log(validCharacters.test(e.key));
-    console.log(e.keyCode)
-    const id = `${x}:${y}`
-    // Go to input field top
-    if(e.key === 'ArrowUp') {
-      e.preventDefault()
-      this.placeField(x, y - this.state.size / 2)
-      return
-    }
-    // Go to input field right
-    if(e.keyCode === 32 || e.key === 'ArrowRight') {
-      e.preventDefault()
-      this.placeField(x + this.state.size * 2, y)
-      return
-    }
-    // Go to input field below
-    if(e.key === 'Enter' || e.key === 'ArrowDown') {
-      e.preventDefault()
-      this.placeField(x, y + this.state.size * 2)
-      return
-    }
-    // Go to input field left
-    if(e.key === 'ArrowLeft') {
-      e.preventDefault()
-      this.placeField(x - this.state.size / 2, y)
-      return
-    }
-    // Pressed backspace, clear input field
-    if(e.keyCode === 8) {
-      this.setCharByKey(id, '')
-      return
-    }
-    // Pressed another key, check its length
-    if(e.key.length !== 1) {
-      e.preventDefault()
-      return
-    }
-    // Probably pressed character, check it against allowed characters
-    if(!validCharacters.test(e.key)) {
-      e.preventDefault()
-      return
-    }
-    // Char is allowed, update state
-    this.setCharByKey(id, e.key)
-  }
-
-  onCharClick(e, x, y) {
-    console.log(e)
-    const id = `${x}:${y}`
-    this.setFocusByKey(id)
   }
 
   renderCharInputs() {
