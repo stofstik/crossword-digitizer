@@ -1,15 +1,21 @@
+import store          from 'store'
 import { findSquare } from '../utils/pixel-processing'
 
-export function placeField(canvasX, canvasY) {
+export function saveState(state) {
+  store.set('app-state', state)
+}
+
+export function placeField(canvasX, canvasY, cb) {
   const square = findSquare(this.ctx, canvasX, canvasY)
   if (!square) return
-  if (!this.state.size) {
-    this.setState( { size: square.size } )
-  }
+  // if (this.state.size === 0) {
+    // this.setState( { size: square.size }, () => {
+    // })
+  // }
   let { x, y } = square
 
-  x = Math.round( x - this.state.size / 2 )
-  y = Math.round( y - this.state.size / 2 )
+  x = Math.round( x - square.size / 2 )
+  y = Math.round( y - square.size / 2 )
 
   const key = `${x}:${y}`
   // Set focus to field if it already exists
@@ -20,10 +26,12 @@ export function placeField(canvasX, canvasY) {
     this.setFocusByKey(existingField.key)
     return
   }
-  const field = { key: key, x: x, y: y, char: '', hasFocus: true }
+  const field = { key: key, x: x, y: y, size: square.size, char: '', hasFocus: true }
   this.setState(prevState => ({
     fields: prevState.fields.concat(field)
-  }))
+  }), () => {
+    saveState(this.state)
+  })
 }
 
 export function setCharByKey(key, char, cb) {
@@ -34,7 +42,9 @@ export function setCharByKey(key, char, cb) {
       }
       return f
     })
-  }), cb)
+  }), () => {
+    saveState(this.state)
+  })
 }
 
 export function setFocusByKey(key, cb) {
@@ -47,5 +57,7 @@ export function setFocusByKey(key, cb) {
       }
       return f
     })
-  }), cb)
+  }), () => {
+    saveState(this.state)
+  })
 }

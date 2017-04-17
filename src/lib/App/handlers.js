@@ -1,29 +1,29 @@
 import { validCharacters }  from '../utils/text-stuff'
 
-export function onKeyUp(e, x, y) {
+export function onKeyUp(e, x, y, size) {
   const id = `${x}:${y}`
   // Go to input field top
   if(e.key === 'ArrowUp') {
     e.preventDefault()
-    this.placeField(x, y - this.state.size / 2)
+    this.placeField(x, y - size / 2)
     return
   }
   // Go to input field right
   if(e.keyCode === 32 || e.key === 'ArrowRight') {
     e.preventDefault()
-    this.placeField(x + this.state.size * 2, y)
+    this.placeField(x + size * 2, y)
     return
   }
   // Go to input field below
   if(e.key === 'Enter' || e.key === 'ArrowDown') {
     e.preventDefault()
-    this.placeField(x, y + this.state.size * 2)
+    this.placeField(x, y + size * 2)
     return
   }
   // Go to input field left
   if(e.key === 'ArrowLeft') {
     e.preventDefault()
-    this.placeField(x - this.state.size / 2, y)
+    this.placeField(x - size / 2, y)
     return
   }
   // Pressed backspace, clear input field
