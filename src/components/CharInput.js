@@ -4,18 +4,17 @@ export class CharInput extends Component {
  constructor(props) {
     super(props);
     this.onKeyPress = this.onKeyPress.bind(this);
+    this.onKeyUp    = this.onKeyUp.bind(this);
+    this.onClick    = this.onClick.bind(this);
     this.focus      = this.focus.bind(this);
   }
 
   componentDidMount() {
-    console.log('mounted!');
     this.focus();
   }
 
   componentDidUpdate() {
-    console.log('updated!');
     if(this.props.hasFocus) {
-      console.log('set focus to', this.props.left, this.props.top)
       this.focus();
     }
   }
@@ -26,6 +25,14 @@ export class CharInput extends Component {
 
   onKeyPress(e) {
     this.props.onKeyPress( e, this.props.left, this.props.top );
+  }
+
+  onKeyUp(e) {
+    this.props.onKeyPress( e, this.props.left, this.props.top );
+  }
+
+  onClick(e) {
+    this.props.onClick( e, this.props.left, this.props.top );
   }
 
   render() {
@@ -40,9 +47,12 @@ export class CharInput extends Component {
         className="char-input"
         type="text"
         ref={ (input) => this.textInput = input }
-        onKeyPress={ this.onKeyPress }
+        // onKeyPress={ this.onKeyPress }
+        onKeyUp={ this.onKeyPress }
+        onClick={ this.onClick }
         style={ style }
         maxLength="1"
+        maxlength="1"
       />
     );
   }
