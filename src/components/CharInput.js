@@ -3,8 +3,9 @@ import React, { Component } from 'react';
 export class CharInput extends Component {
  constructor(props) {
     super(props);
-    this.onKeyPress = this.onKeyPress.bind(this);
     this.onKeyUp    = this.onKeyUp.bind(this);
+    this.onKeyDown  = this.onKeyDown.bind(this);
+    this.onKeyPress = this.onKeyPress.bind(this);
     this.onClick    = this.onClick.bind(this);
     this.focus      = this.focus.bind(this);
   }
@@ -23,12 +24,17 @@ export class CharInput extends Component {
     this.textInput.focus();
   }
 
-  onKeyPress(e) {
-    this.props.onKeyPress( e, this.props.left, this.props.top );
+  onKeyUp(e) {
+    e.preventDefault()
+    this.props.onKeyUp( e, this.props.left, this.props.top );
   }
 
-  onKeyUp(e) {
-    this.props.onKeyPress( e, this.props.left, this.props.top );
+  onKeyDown(e) {
+    e.preventDefault()
+  }
+
+  onKeyPress(e) {
+    e.preventDefault()
   }
 
   onClick(e) {
@@ -47,12 +53,13 @@ export class CharInput extends Component {
         className="char-input"
         type="text"
         ref={ (input) => this.textInput = input }
-        // onKeyPress={ this.onKeyPress }
-        onKeyUp={ this.onKeyPress }
+        onKeyUp={ this.onKeyUp }
+        onKeyDown={ this.onKeyDown }
+        onKeyPress={ this.onKeyPress }
         onClick={ this.onClick }
+        value={ this.props.char }
         style={ style }
         maxLength="1"
-        maxlength="1"
       />
     );
   }

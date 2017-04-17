@@ -15,7 +15,7 @@ class App extends Component {
     }
     this.onClick     = this.onClick.bind(this)
     this.onCharClick = this.onCharClick.bind(this)
-    this.onKeyPress  = this.onKeyPress.bind(this)
+    this.onKeyUp     = this.onKeyUp.bind(this)
   }
 
   componentDidMount() {
@@ -123,7 +123,7 @@ class App extends Component {
       this.setFocusByKey(existingField.key)
       return
     }
-    const field = { key: key, x: x, y: y, char: null, hasFocus: true }
+    const field = { key: key, x: x, y: y, char: '', hasFocus: true }
     this.setState(prevState => ({
       fields: prevState.fields.concat(field)
     }))
@@ -153,8 +153,9 @@ class App extends Component {
     }), cb)
   }
 
-  onKeyPress(e, x, y) {
+  onKeyUp(e, x, y) {
     console.log(e.key)
+    console.log(validCharacters.test(e.key));
     console.log(e.keyCode)
     const id = `${x}:${y}`
     // Pressed Enter, add input field below
@@ -164,46 +165,46 @@ class App extends Component {
       return
     }
     // Pressed Space, add input field right
-    if(e.key === ' ') {
+    if(e.keyCode === 32) {
       e.preventDefault()
       this.placeField(x + this.state.size * 2, y)
       return
     }
-    // Pressed another key, check it against allowed characters
+    // Pressed backspace, clear input field
+    if(e.keyCode === 8) {
+      this.setCharByKey(id, '')
+      return
+    }
+    // Pressed another key, check its length
+    if(e.key.length !== 1) {
+      e.preventDefault()
+      return
+    }
+    // Probably pressed character, check it against allowed characters
     if(!validCharacters.test(e.key)) {
       e.preventDefault()
       return
     }
-    // Pressed backspace, clear input field
-    if(e.keyCode === 8) {
-      this.setCharByKey(id, null, () => {
-        console.log(this.state)
-      })
-      return
-    }
     // Char is allowed, update state
-    this.setCharByKey(id, e.key, () => {
-      console.log(this.state)
-    })
+    this.setCharByKey(id, e.key)
   }
 
   onCharClick(e, x, y) {
     console.log(e)
     const id = `${x}:${y}`
-    this.setFocusByKey(id, () => {
-      console.log(this.state)
-    })
+    this.setFocusByKey(id)
   }
 
   renderCharInputs() {
     return this.state.fields.map((f) => {
       return (
         <CharInput
-          onKeyPress={ this.onKeyPress }
+          onKeyUp={ this.onKeyUp }
           onClick={ this.onCharClick }
           key={ f.key }
           top={ f.y }
           left={ f.x }
+          char={ f.char }
           hasFocus={ f.hasFocus }
           size={ this.state.size } />
       )
