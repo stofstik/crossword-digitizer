@@ -158,16 +158,28 @@ class App extends Component {
     console.log(validCharacters.test(e.key));
     console.log(e.keyCode)
     const id = `${x}:${y}`
-    // Pressed Enter, add input field below
-    if(e.key === 'Enter') {
+    // Go to input field top
+    if(e.key === 'ArrowUp') {
+      e.preventDefault()
+      this.placeField(x, y - this.state.size / 2)
+      return
+    }
+    // Go to input field right
+    if(e.keyCode === 32 || e.key === 'ArrowRight') {
+      e.preventDefault()
+      this.placeField(x + this.state.size * 2, y)
+      return
+    }
+    // Go to input field below
+    if(e.key === 'Enter' || e.key === 'ArrowDown') {
       e.preventDefault()
       this.placeField(x, y + this.state.size * 2)
       return
     }
-    // Pressed Space, add input field right
-    if(e.keyCode === 32) {
+    // Go to input field left
+    if(e.key === 'ArrowLeft') {
       e.preventDefault()
-      this.placeField(x + this.state.size * 2, y)
+      this.placeField(x - this.state.size / 2, y)
       return
     }
     // Pressed backspace, clear input field
