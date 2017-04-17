@@ -51,7 +51,11 @@ export function findSquare(ctx, x, y) {
     }
   }
   const height   = bottom - top
-  const width    = right  - left
+  console.log('left', left)
+  console.log('right', right)
+  console.log('left - right', right - left)
+  const width    = Math.ceil( ( (right - left) / 4 ) * 4 )
+  console.log('witdtj', width)
   const centerX  = left   + width  / 2
   const centerY  = top    + height / 2
   const tooBig   = width > 50 || height > 50
@@ -61,7 +65,7 @@ export function findSquare(ctx, x, y) {
     return
   }
   console.log(width - 2)
-  return { x: centerX, y: centerY, size: width - 2 }
+  return { x: centerX, y: centerY, size: width }
 }
 
 export function isWhite(color) {
