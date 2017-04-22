@@ -1,48 +1,56 @@
 import { validCharacters }  from '../utils/text-stuff'
 
-export function onKeyUp(e, x, y, size) {
-  const id = `${x}:${y}`
+export function onKeyUp(e, topLeftX, topLeftY, size) {
+  console.log('onKeyUp')
+  const id     = `${topLeftX}:${topLeftY}`
+  const offset = size / 2
+  const x      = topLeftX + offset
+  const y      = topLeftY + offset
   // Go to input field top
   if(e.key === 'ArrowUp') {
     e.preventDefault()
-    this.placeField(x, y - size / 2)
+    this.placeField(x, y - size)
     return
   }
   // Go to input field right
   if(e.keyCode === 32 || e.key === 'ArrowRight') {
     e.preventDefault()
-    this.placeField(x + size * 2, y)
+    this.placeField(x + size, y)
     return
   }
   // Go to input field below
   if(e.key === 'Enter' || e.key === 'ArrowDown') {
     e.preventDefault()
-    this.placeField(x, y + size * 2)
+    this.placeField(x, y + size)
     return
   }
   // Go to input field left
   if(e.key === 'ArrowLeft') {
     e.preventDefault()
-    this.placeField(x - size / 2, y)
+    this.placeField(x - size, y)
     return
   }
-  // Pressed backspace, clear input field
-  if(e.keyCode === 8) {
+}
+
+export function onChange(e, x, y, size) {
+  console.log('onChange')
+  const c  = e.target.value.charAt(0)
+  const id = `${x}:${y}`
+  console.log(c)
+  console.log(id)
+
+  if(!e.target.value) {
     this.setCharByKey(id, '')
     return
   }
-  // Pressed another key, check its length
-  if(e.key.length !== 1) {
-    e.preventDefault()
-    return
-  }
-  // Probably pressed character, check it against allowed characters
-  if(!validCharacters.test(e.key)) {
+
+  if(!validCharacters.test(c)) {
     e.preventDefault()
     return
   }
   // Char is allowed, update state
-  this.setCharByKey(id, e.key)
+  this.setCharByKey(id, c)
+  console.log(this.state)
 }
 
 export function onCharClick(e, x, y) {

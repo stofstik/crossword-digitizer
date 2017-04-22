@@ -4,8 +4,6 @@ export class CharInput extends Component {
  constructor(props) {
     super(props);
     this.onKeyUp    = this.onKeyUp.bind(this)
-    this.onKeyDown  = this.onKeyDown.bind(this)
-    this.onKeyPress = this.onKeyPress.bind(this)
     this.onClick    = this.onClick.bind(this)
     this.onChange   = this.onChange.bind(this)
     this.focus      = this.focus.bind(this)
@@ -25,21 +23,18 @@ export class CharInput extends Component {
     this.textInput.focus()
   }
 
+  /*
+   * Need to use both onKeyUp and onKeyPress as we want to catch arrow keys as
+   * well as chars.
+   * onKeyPress does not trigger for arrow keys and stuff : (
+   */
   onKeyUp(e) {
-    e.preventDefault()
     this.props.onKeyUp( e, this.props.left, this.props.top, this.props.size )
   }
 
-  onKeyDown(e) {
-    e.preventDefault()
-  }
-
-  onKeyPress(e) {
-    e.preventDefault()
-  }
-
   onChange(e) {
-    e.preventDefault()
+    this.props.onChange( e, this.props.left, this.props.top, this.props.size )
+    // e.preventDefault()
   }
 
   onClick(e) {
@@ -59,8 +54,6 @@ export class CharInput extends Component {
         type="text"
         ref={ (input) => this.textInput = input }
         onKeyUp={ this.onKeyUp }
-        onKeyDown={ this.onKeyDown }
-        onKeyPress={ this.onKeyPress }
         onChange={ this.onChange }
         onClick={ this.onClick }
         value={ this.props.char }

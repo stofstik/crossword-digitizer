@@ -3,6 +3,7 @@ import store                from 'store'
 import React, { Component } from 'react'
 import { CharInput }        from './components/CharInput'
 import { onKeyUp }          from './lib/App/handlers'
+import { onChange }         from './lib/App/handlers'
 import { onClick }          from './lib/App/handlers'
 import { onCharClick }      from './lib/App/handlers'
 import { placeField }       from './lib/App/state-stuff'
@@ -16,6 +17,7 @@ class App extends Component {
     this.state = store.get('app-state') || { fields: [] }
     // App Handlers
     this.onKeyUp       = onKeyUp.bind(this)
+    this.onChange      = onChange.bind(this)
     this.onClick       = onClick.bind(this)
     this.onCharClick   = onCharClick.bind(this)
     // App State changers
@@ -41,6 +43,7 @@ class App extends Component {
       return (
         <CharInput
           onKeyUp={ this.onKeyUp }
+          onChange={ this.onChange }
           onClick={ this.onCharClick }
           key={ f.key }
           top={ f.y }
