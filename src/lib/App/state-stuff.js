@@ -1,5 +1,6 @@
-import store          from 'store'
-import { findSquare } from '../utils/pixel-processing'
+import store            from 'store'
+import { findSquare }   from '../utils/pixel-processing'
+import { findHoriVerti } from '../utils/pixel-processing'
 
 export function saveState(state) {
   store.set('app-state', state)
@@ -10,12 +11,15 @@ export function placeField(canvasX, canvasY, cb) {
   const square = findSquare(this.ctx, canvasX, canvasY)
   if (!square) return
 
-  const x    = square.topLeftX
-  const y    = square.topLeftY
-  const size = square.size
-  const key = `${x}:${y}`
+  const x       = square.topLeftX
+  const y       = square.topLeftY
+  // const onHori  = square.onHori
+  // const onVerti = square.onHori
+  const size    = square.size
+  const key     = `${x}:${y}`
 
   console.log(x, y)
+  const { onHori, onVerti } = findHoriVerti(this.ctx, x, y, size)
 
   // Set focus to field if it already exists
   const existingField = this.state.fields.find((f) => {
@@ -26,11 +30,23 @@ export function placeField(canvasX, canvasY, cb) {
     this.setFocusByKey(existingField.key)
     return
   }
-  const field = { key: key, x: x, y: y, size: size, char: '', hasFocus: true }
+  const field = {
+    key: key,
+    x: x,
+    y: y,
+    onHori: onHori,
+    onVerti: onVerti,
+    size: size,
+    char: '',
+    hasFocus: true
+  }
   this.setState(prevState => ({
-    fields: prevState.fields.concat(field)
+    fields: prevState.fields.concat(field),
+    writingDirection: onHori
   }), () => {
     saveState(this.state)
+    console.log(this.state
+    )
   })
 }
 

@@ -30,7 +30,7 @@ export function findSquare(ctx, x, y) {
   }
   if(!right || !bottom) {
     console.warn('Could not find center')
-    return
+    return null
   }
   // Then left using bottom right
   for(let x = 0; x < 30; x++) {
@@ -58,13 +58,40 @@ export function findSquare(ctx, x, y) {
   const tooSmall = width < 10 || height < 10
   if(tooBig || tooSmall || !height || !width) {
     console.warn('Could not find center')
-    return
+    return null
   }
-  return { topLeftX: left + 1, topLeftY: top + 1, x: centerX, y: centerY, size: width }
+  return {
+    topLeftX: left + 1,
+    topLeftY: top + 1,
+    x:        centerX,
+    y:        centerY,
+    onHori:   null,
+    onVerti:  null,
+    size:     width
+  }
 }
 
-export function findHoriVert(ctx, x, y) {
-
+export function findHoriVerti(ctx, topLeftX, topLeftY, size) {
+  console.log('yay')
+  const offset  = size / 2
+  const x       = topLeftX + offset
+  const y       = topLeftY + offset
+  const top     = !!findSquare(ctx, x, y - size)
+  const bottom  = !!findSquare(ctx, x, y + size)
+  const right   = !!findSquare(ctx, x + size, y)
+  const left    = !!findSquare(ctx, x - size, y)
+  const onHori  = left || right
+  const onVerti = top  || bottom
+  console.log('top', top)
+  console.log('bottom', bottom)
+  console.log('left', left)
+  console.log('right', right)
+  console.log('onHori', onHori)
+  console.log('onVerti', onVerti)
+  return {
+    onHori:  onHori,
+    onVerti: onVerti
+  }
 }
 
 export function isWhite(color) {

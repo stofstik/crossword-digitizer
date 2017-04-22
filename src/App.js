@@ -14,7 +14,7 @@ import './App.css'
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = store.get('app-state') || { fields: [] }
+    this.state = store.get('app-state') || { fields: [], writingDirection: true}
     // App Handlers
     this.onKeyUp       = onKeyUp.bind(this)
     this.onChange      = onChange.bind(this)

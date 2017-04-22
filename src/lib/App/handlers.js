@@ -32,18 +32,14 @@ export function onKeyUp(e, topLeftX, topLeftY, size) {
   }
 }
 
-export function onChange(e, x, y, size) {
+export function onChange(e, topLeftX, topLeftY, size) {
   console.log('onChange')
   const c  = e.target.value.charAt(0)
-  const id = `${x}:${y}`
-  console.log(c)
-  console.log(id)
-
+  const id = `${topLeftX}:${topLeftY}`
   if(!e.target.value) {
     this.setCharByKey(id, '')
     return
   }
-
   if(!validCharacters.test(c)) {
     e.preventDefault()
     return
@@ -51,6 +47,14 @@ export function onChange(e, x, y, size) {
   // Char is allowed, update state
   this.setCharByKey(id, c)
   console.log(this.state)
+  const offset = size / 2
+  const x      = topLeftX + offset
+  const y      = topLeftY + offset
+  if(this.state.writingDirection) {
+    this.placeField(x + size, y)
+  } else {
+    this.placeField(x, y + size)
+  }
 }
 
 export function onCharClick(e, x, y) {

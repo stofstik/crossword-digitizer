@@ -7,6 +7,7 @@ export class CharInput extends Component {
     this.onClick    = this.onClick.bind(this)
     this.onChange   = this.onChange.bind(this)
     this.focus      = this.focus.bind(this)
+    this.onFocus    = this.onFocus.bind(this)
   }
 
   componentDidMount() {
@@ -21,6 +22,10 @@ export class CharInput extends Component {
 
   focus() {
     this.textInput.focus()
+  }
+
+  onFocus(e) {
+    e.target.select()
   }
 
   /*
@@ -56,6 +61,7 @@ export class CharInput extends Component {
         onKeyUp={ this.onKeyUp }
         onChange={ this.onChange }
         onClick={ this.onClick }
+        onFocus={ this.onFocus }
         value={ this.props.char }
         style={ style }
         maxLength="1"
