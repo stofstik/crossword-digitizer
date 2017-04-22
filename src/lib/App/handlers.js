@@ -13,7 +13,7 @@ export function onKeyUp(e, topLeftX, topLeftY, size) {
     return
   }
   // Go to input field right
-  if(e.keyCode === 32 || e.key === 'ArrowRight') {
+  if(e.keyCode === 32  || e.key === 'ArrowRight') {
     e.preventDefault()
     this.placeField(x + size, y)
     return
@@ -25,7 +25,7 @@ export function onKeyUp(e, topLeftX, topLeftY, size) {
     return
   }
   // Go to input field left
-  if(e.key === 'ArrowLeft') {
+  if(e.keyCode === 8   || e.key === 'ArrowLeft') {
     e.preventDefault()
     this.placeField(x - size, y)
     return
@@ -38,6 +38,11 @@ export function onChange(e, topLeftX, topLeftY, size) {
   const id = `${topLeftX}:${topLeftY}`
   if(!e.target.value) {
     this.setCharByKey(id, '')
+    if(this.state.writingDirection) {
+      this.placeField(x - size, y)
+    } else {
+      this.placeField(x, y - size)
+    }
     return
   }
   if(!validCharacters.test(c)) {
