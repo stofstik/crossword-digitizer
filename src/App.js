@@ -32,9 +32,14 @@ class App extends Component {
     const img   = new Image()
     img.src     = 'crypto.png'
     img.onload  = () => {
-      this.canvas.width  = img.width
-      this.canvas.height = img.height
-      this.ctx.drawImage(img, 0, 0, img.width, img.height)
+      this.setState({
+        width:  img.width,
+        height: img.height
+      }, () => {
+        this.canvas.width  = img.width
+        this.canvas.height = img.height
+        this.ctx.drawImage(img, 0, 0, img.width, img.height)
+      })
     }
   }
 
@@ -56,14 +61,20 @@ class App extends Component {
   }
 
   render() {
+    const style = {
+      width: this.state.width,
+      height: this.state.height
+    }
     return (
       <div className="App">
-        <canvas
-          className="canvas"
-          id="canvas"
-          onClick={ this.onClick }
-        />
-        { this.renderCharInputs() }
+        <div style={ style } className="container">
+          <canvas
+            className="canvas"
+            id="canvas"
+            onClick={ this.onClick }
+          />
+          { this.renderCharInputs() }
+        </div>
       </div>
     )
   }

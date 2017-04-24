@@ -5,10 +5,13 @@
   font-family: 'Pangolin', cursive;
 }
 
+.container {
+  position: relative;
+  margin: auto;
+}
+
 .canvas {
   cursor: pointer;
-  /* margin: auto; */
-  display: block;
 }
 
 .char-input {
@@ -23,8 +26,8 @@
   border-radius:5px;
   -moz-border-radius:5px;
   -webkit-border-radius:5px;
-  position:   absolute;
-  text-align:  center;
+  position: absolute;
+  text-align: center;
   text-transform: uppercase;
   font-family: 'Pangolin', cursive;
 }
