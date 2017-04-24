@@ -30,7 +30,7 @@ class App extends Component {
     this.canvas = document.getElementById('canvas')
     this.ctx    = this.canvas.getContext('2d')
     const img   = new Image()
-    img.src     = 'crypto.png'
+    img.src     = 'crypto2.png'
     img.onload  = () => {
       this.setState({
         width:  img.width,

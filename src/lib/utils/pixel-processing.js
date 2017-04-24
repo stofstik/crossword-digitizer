@@ -11,7 +11,7 @@ export function findSquare(ctx, x, y) {
   const startY = y
   let right, left, top, bottom
   // Find right border first
-  for(let x = 0; x < 30; x++) {
+  for(let x = 0; x < 40; x++) {
     const pos = startX + x
     color = ctx.getImageData(pos, startY, 1, 1).data
     if(!isWhite(color)) {
@@ -20,7 +20,7 @@ export function findSquare(ctx, x, y) {
     }
   }
   // Then find bottom border using right border's pos
-  for(let y = 0; y < 30; y++) {
+  for(let y = 0; y < 40; y++) {
     const pos = startY + y
     color = ctx.getImageData(startX, pos, 1, 1).data
     if(!isWhite(color)) {
@@ -33,7 +33,7 @@ export function findSquare(ctx, x, y) {
     return null
   }
   // Then left using bottom right
-  for(let x = 0; x < 30; x++) {
+  for(let x = 0; x < 40; x++) {
     const pos = right - 1 - x
     color = ctx.getImageData(pos, bottom - 1, 1, 1).data
     if(!isWhite(color)) {
@@ -42,7 +42,7 @@ export function findSquare(ctx, x, y) {
     }
   }
   // And lastly top using bottom right
-  for(let y = 0; y < 30; y++) {
+  for(let y = 0; y < 40; y++) {
     const pos = bottom - 1 - y
     color = ctx.getImageData(right - 1, pos, 1, 1).data
     if(!isWhite(color)) {
@@ -54,7 +54,7 @@ export function findSquare(ctx, x, y) {
   const width    = (Math.floor( ( (right - left) / 2 ) ) * 2)
   const centerX  = left   + width  / 2
   const centerY  = top    + height / 2
-  const tooBig   = width > 50 || height > 50
+  const tooBig   = width > 80 || height > 80
   const tooSmall = width < 10 || height < 10
   if(tooBig || tooSmall || !height || !width) {
     console.warn('Could not find center')
