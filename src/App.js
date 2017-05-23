@@ -67,13 +67,17 @@ class App extends Component {
     }
     return (
       <div className="App">
-        <div style={ style } className="container">
-          <canvas
-            className="canvas"
-            id="canvas"
-            onClick={ this.onClick }
-          />
-          { this.renderCharInputs() }
+        <div className="app-container">
+          <div className="action-bar"> </div>
+          <div className="canvas-container">
+            <canvas
+              style={ style }
+              className="canvas"
+              id="canvas"
+              onClick={ this.onClick }
+            />
+            { this.renderCharInputs() }
+          </div>
         </div>
       </div>
     )
