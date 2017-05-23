@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Pangolin');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 .App {
   background: lightblue;
@@ -6,20 +7,23 @@
 }
 
 .action-bar {
-  background: rgba(179, 229, 252, 0.5);
+  background: rgba(179, 229, 252, 1.0);
   height: 48px;
   position: fixed;
   top: 0px;
   width: 100%;
+  z-index: 1000;
+  box-shadow: 1px;
+  display: inline-block;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 
-.container {
+.canvas-container {
   position: relative;
   margin-left: auto;
   margin-right: auto;
   margin-top: 48px;
-  height: 100%;
-  overflow: scroll;
 }
 
 .canvas {

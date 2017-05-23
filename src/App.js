@@ -1,6 +1,7 @@
 import _                    from 'underscore'
 import store                from 'store'
 import React, { Component } from 'react'
+import { Button }           from './components/Button'
 import { CharInput }        from './components/CharInput'
 import { onKeyUp }          from './lib/App/handlers'
 import { onChange }         from './lib/App/handlers'
@@ -21,7 +22,6 @@ class App extends Component {
     this.onClick       = onClick.bind(this)
     this.onCharClick   = onCharClick.bind(this)
     // App State changers
-    this.placeField    = placeField.bind(this)
     this.setCharByKey  = setCharByKey.bind(this)
     this.setFocusByKey = setFocusByKey.bind(this)
   }
@@ -68,10 +68,11 @@ class App extends Component {
     return (
       <div className="App">
         <div className="app-container">
-          <div className="action-bar"> </div>
-          <div className="canvas-container">
+          <div className="action-bar">
+            <Button icon="delete_forever" />
+          </div>
+          <div style={ style } className="canvas-container">
             <canvas
-              style={ style }
               className="canvas"
               id="canvas"
               onClick={ this.onClick }
