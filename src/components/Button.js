@@ -14,7 +14,7 @@ export class Button extends Component {
 		const size      = this.props.size || 48
 		const className = `material-icons md-${ size }`
 		return (
-			<div onClick={ this.onClick }>
+			<div onClick={ this.props.onClick }>
 				<i className={ className }>{ this.props.icon }</i>
 			</div>
 		)

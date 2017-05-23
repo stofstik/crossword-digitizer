@@ -6,6 +6,17 @@ export function saveState(state) {
   store.set('app-state', state)
 }
 
+export function clearAll() {
+  if(confirm('Clear all?')) {
+    this.setState({
+      fields: []
+    }, () => {
+      saveState(this.state)
+    })
+  }
+}
+
+
 export function placeField(canvasX, canvasY, cb) {
   if(!canvasX || !canvasY) return
   console.log(canvasX, canvasY)

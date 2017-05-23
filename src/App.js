@@ -7,6 +7,7 @@ import { onKeyUp }          from './lib/App/handlers'
 import { onChange }         from './lib/App/handlers'
 import { onClick }          from './lib/App/handlers'
 import { onCharClick }      from './lib/App/handlers'
+import { clearAll }         from './lib/App/state-stuff'
 import { placeField }       from './lib/App/state-stuff'
 import { setCharByKey }     from './lib/App/state-stuff'
 import { setFocusByKey }    from './lib/App/state-stuff'
@@ -22,6 +23,7 @@ class App extends Component {
     this.onClick       = onClick.bind(this)
     this.onCharClick   = onCharClick.bind(this)
     // App State changers
+    this.clearAll      = clearAll.bind(this)
     this.setCharByKey  = setCharByKey.bind(this)
     this.setFocusByKey = setFocusByKey.bind(this)
   }
@@ -69,7 +71,7 @@ class App extends Component {
       <div className="App">
         <div className="app-container">
           <div className="action-bar">
-            <Button icon="delete_forever" />
+            <Button onClick={ this.clearAll } icon="delete_forever" />
           </div>
           <div style={ style } className="canvas-container">
             <canvas
