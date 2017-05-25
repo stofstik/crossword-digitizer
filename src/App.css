@@ -19,6 +19,27 @@
   transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 
+.button {
+  cursor:  pointer;
+  height:  48px;
+  width:   48px;
+  background: lightblue;
+}
+
+.button i {
+  color: #fff;
+  width: 50%;
+  display: block;
+  padding: 8px;
+  font-size: 24pt;
+}
+
+.delete-button {
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
 .canvas-container {
   position: relative;
   margin-left: auto;

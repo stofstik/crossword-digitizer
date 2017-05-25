@@ -72,7 +72,7 @@ class App extends Component {
       <div className="App">
         <div className="app-container">
           <div className="action-bar">
-            <Button buttonStyle={ { position: "fixed", top: 0, right: 0 } } onClick={ this.clearAll } icon="delete_forever" />
+            <Button buttonCSS="delete-button" onClick={ this.clearAll } icon="delete_forever" />
           </div>
           <div style={ style } className="canvas-container">
             <canvas
