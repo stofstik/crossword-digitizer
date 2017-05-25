@@ -16,7 +16,6 @@ export function clearAll() {
   }
 }
 
-
 export function placeField(canvasX, canvasY, cb) {
   if(!canvasX || !canvasY) return
   console.log(canvasX, canvasY)

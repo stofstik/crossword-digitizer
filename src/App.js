@@ -24,6 +24,7 @@ class App extends Component {
     this.onCharClick   = onCharClick.bind(this)
     // App State changers
     this.clearAll      = clearAll.bind(this)
+    this.placeField    = placeField.bind(this)
     this.setCharByKey  = setCharByKey.bind(this)
     this.setFocusByKey = setFocusByKey.bind(this)
   }
@@ -71,7 +72,7 @@ class App extends Component {
       <div className="App">
         <div className="app-container">
           <div className="action-bar">
-            <Button onClick={ this.clearAll } icon="delete_forever" />
+            <Button buttonStyle={ { position: "fixed", top: 0, right: 0 } } onClick={ this.clearAll } icon="delete_forever" />
           </div>
           <div style={ style } className="canvas-container">
             <canvas
