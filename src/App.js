@@ -76,20 +76,6 @@ class App extends Component {
     })
   }
 
-  yolo(e) {
-    console.log("e", e.target.files[0])
-    const file   = e.target.files[0]
-    const reader = new FileReader()
-    reader.onload = ((aImg) => {
-      return (e) => {
-        store.set('image', e.target.result)
-        this.updateCanvas()
-      }
-    })()
-    reader.readAsDataURL(file)
-
-  }
-
   render() {
     const style = {
       width: this.state.width,
