@@ -53,9 +53,13 @@ export class CharInput extends Component {
       top:    this.props.top,
       left:   this.props.left,
     }
+    let className = "char-input"
+    if(this.props.highlighted) {
+      className += " highlighted"
+    }
     return (
       <input
-        className="char-input"
+        className={ className }
         type="text"
         ref={ (input) => this.textInput = input }
         onKeyUp={ this.onKeyUp }
