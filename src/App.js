@@ -7,6 +7,7 @@ import { onKeyUp }             from './lib/App/handlers'
 import { onChange }            from './lib/App/handlers'
 import { onClick }             from './lib/App/handlers'
 import { onCharClick }         from './lib/App/handlers'
+import { onFileInputChange }   from './lib/App/handlers'
 import { clearAll }            from './lib/App/state-stuff'
 import { placeField }          from './lib/App/state-stuff'
 import { setCharByKey }        from './lib/App/state-stuff'
@@ -24,7 +25,7 @@ class App extends Component {
     this.onChange            = onChange.bind(this)
     this.onClick             = onClick.bind(this)
     this.onCharClick         = onCharClick.bind(this)
-    this.yolo                = this.yolo.bind(this)
+    this.onFileInputChange   = onFileInputChange.bind(this)
     // State changers
     this.clearAll            = clearAll.bind(this)
     this.placeField          = placeField.bind(this)
@@ -94,7 +95,7 @@ class App extends Component {
       <div className="App">
         <div className="app-container">
           <div className="action-bar">
-            <input onChange={ this.yolo } ref="imgUpload" id="imgUpload" name="img" type="file" accept="image/*" />
+            <input onChange={ this.onFileInputChange } ref="imgUpload" id="imgUpload" name="img" type="file" accept="image/*" />
             <Button buttonCSS="delete-button" onClick={ this.clearAll } icon="delete_forever" />
           </div>
           <div style={ style } className="canvas-container">

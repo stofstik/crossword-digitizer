@@ -56,7 +56,7 @@
   margin:  0;
   border:  none;
   outline: none;
-  background: rgba(0, 0, 0, 0.0);
+  /* background: rgba(179, 229, 252, 0.5); */
   font-weight: bold;
   border-radius: 10;
   display: block;

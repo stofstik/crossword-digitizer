@@ -1,4 +1,5 @@
 import { validCharacters }  from '../utils/text-stuff'
+import store from 'store'
 
 export function onKeyUp(e, topLeftX, topLeftY, size) {
   const id     = `${topLeftX}:${topLeftY}`
@@ -57,4 +58,18 @@ export function onClick(e) {
   const canvasX = e.clientX - rect.left
   const canvasY = e.clientY - rect.top
   this.setWritingDirection(canvasX, canvasY)
+}
+
+export function onFileInputChange(e) {
+  const file    = e.target.files[0]
+  const reader  = new FileReader()
+  reader.onload = ((aImg) => {
+    return (e) => {
+      store.set('image', e.target.result)
+      store.set('app-state', '')
+      this.updateCanvas()
+      this.setState({ fields: [], writingDirection: true})
+    }
+  })()
+  reader.readAsDataURL(file)
 }
