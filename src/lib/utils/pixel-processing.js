@@ -2,8 +2,10 @@
  * Finds each edge of a square
  */
 export function findSquare(ctx, x, y) {
-  let color = ctx.getImageData(x, y, 1, 1).data
-  if(!isWhite(color)) {
+  let color    = ctx.getImageData(x, y, 1, 1).data
+  const DISTANCE = 40
+  const OFFSET   = DISTANCE / 4
+  if(!isLight(color)) {
     console.info('Not a white pixel : (')
     return
   }
@@ -11,41 +13,42 @@ export function findSquare(ctx, x, y) {
   const startY = y
   let right, left, top, bottom
   // Find right border first
-  for(let x = 0; x < 40; x++) {
+  for(let x = 0; x < DISTANCE; x++) {
     const pos = startX + x
     color = ctx.getImageData(pos, startY, 1, 1).data
-    if(!isWhite(color)) {
+    if(isDark(color)) {
       right = pos
       break
     }
   }
   // Then find bottom border using right border's pos
-  for(let y = 0; y < 40; y++) {
+  for(let y = 0; y < DISTANCE; y++) {
     const pos = startY + y
     color = ctx.getImageData(startX, pos, 1, 1).data
-    if(!isWhite(color)) {
+    if(isDark(color)) {
       bottom = pos
       break
     }
   }
   if(!right || !bottom) {
     console.warn('Could not find center')
+    console.log("!right || !bottom", !right, !bottom)
     return null
   }
   // Then left using bottom right
-  for(let x = 0; x < 40; x++) {
-    const pos = right - 1 - x
-    color = ctx.getImageData(pos, bottom - 1, 1, 1).data
-    if(!isWhite(color)) {
+  for(let x = 0; x < DISTANCE; x++) {
+    const pos = right - OFFSET - x
+    color = ctx.getImageData(pos, bottom - OFFSET, 1, 1).data
+    if(isDark(color)) {
       left = pos
       break
     }
   }
   // And lastly top using bottom right
-  for(let y = 0; y < 40; y++) {
-    const pos = bottom - 1 - y
-    color = ctx.getImageData(right - 1, pos, 1, 1).data
-    if(!isWhite(color)) {
+  for(let y = 0; y < DISTANCE; y++) {
+    const pos = bottom - OFFSET - y
+    color = ctx.getImageData(right - OFFSET, pos, 1, 1).data
+    if(isDark(color)) {
       top = pos
       break
     }
@@ -57,6 +60,10 @@ export function findSquare(ctx, x, y) {
   const tooBig   = width > 80 || height > 80
   const tooSmall = width < 10 || height < 10
   if(tooBig || tooSmall || !height || !width) {
+    console.log("tooBig", tooBig)
+    console.log("tooSmall", tooSmall)
+    console.log("height", !height)
+    console.log("width", !width)
     console.warn('Could not find center')
     return null
   }
@@ -96,11 +103,19 @@ export function isWhite(color) {
   return bool;
 }
 
-export function isBlack(color) {
-  const bool = color[0] === 0 &&
-    color[1] === 0 &&
-    color[2] === 0 &&
-    color[3] === 255
+export function isLight(color) {
+  const bool =
+    color[0] > 215 &&
+    color[1] > 215 &&
+    color[2] > 215
+  return bool;
+}
+
+export function isDark(color) {
+  const bool =
+    color[0] < 192 &&
+    color[1] < 192 &&
+    color[2] < 192
   return bool;
 }
 
