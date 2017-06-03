@@ -72,7 +72,6 @@ export function findSquare(ctx, x, y) {
 }
 
 export function findHoriVerti(ctx, topLeftX, topLeftY, size) {
-  console.log('yay')
   const offset  = size / 2
   const x       = topLeftX + offset
   const y       = topLeftY + offset
@@ -82,12 +81,6 @@ export function findHoriVerti(ctx, topLeftX, topLeftY, size) {
   const left    = !!findSquare(ctx, x - size, y)
   const onHori  = (left && right)  || right
   const onVerti = (top  && bottom) || bottom
-  console.log('top', top)
-  console.log('bottom', bottom)
-  console.log('left', left)
-  console.log('right', right)
-  console.log('onHori', onHori)
-  console.log('onVerti', onVerti)
   return {
     onHori:  onHori,
     onVerti: onVerti
