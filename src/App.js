@@ -44,13 +44,17 @@ class App extends Component {
     const img   = new Image()
     img.src     = store.get('image')
     img.onload  = () => {
+      const ratio = 1000 / img.width
+      const width  = img.width  * ratio
+      const height = img.height * ratio
+
       this.setState({
-        width:  img.width,
-        height: img.height
+        width:  width,
+        height: height
       }, () => {
-        this.canvas.width  = img.width
-        this.canvas.height = img.height
-        this.ctx.drawImage(img, 0, 0, img.width, img.height)
+        this.canvas.width  = width
+        this.canvas.height = height
+        this.ctx.drawImage(img, 0, 0, width, height)
       })
     }
   }
