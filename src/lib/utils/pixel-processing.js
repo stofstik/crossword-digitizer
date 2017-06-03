@@ -57,7 +57,7 @@ export function findSquare(ctx, x, y) {
   const width    = (Math.floor( ( (right - left) / 2 ) ) * 2)
   const centerX  = left   + width  / 2
   const centerY  = top    + height / 2
-  const tooBig   = width > 80 || height > 80
+  const tooBig   = width > DISTANCE * 2 || height > DISTANCE * 2
   const tooSmall = width < 10 || height < 10
   if(tooBig || tooSmall || !height || !width) {
     console.log("tooBig", tooBig)
@@ -112,19 +112,10 @@ export function isLight(color) {
 }
 
 export function isDark(color) {
+  console.log("color", color)
   const bool =
-    color[0] < 192 &&
-    color[1] < 192 &&
-    color[2] < 192
+    color[0] < 220 &&
+    color[1] < 220 &&
+    color[2] < 220
   return bool;
-}
-
-export function imgToBase64(img) {
-  let   imgCanvas = document.createElement('canvas')
-  const imgCtx    = imgCanvas.getContext('2d')
-  imgCanvas.width  = img.width
-  imgCanvas.height = img.height
-  imgCtx.drawImage(img, 0, 0)
-  const dataURL    = imgCanvas.toDataURL("image/png")
-  return dataURL.replace(/^data:image\/(png|jpg);base64,/, '')
 }

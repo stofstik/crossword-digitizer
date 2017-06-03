@@ -2,7 +2,6 @@ import { validCharacters }  from '../utils/text-stuff'
 import store from 'store'
 
 export function onKeyUp(e, topLeftX, topLeftY, size) {
-  const id     = `${topLeftX}:${topLeftY}`
   const offset = size / 2
   const x      = topLeftX + offset
   const y      = topLeftY + offset
@@ -23,11 +22,6 @@ export function onChange(e, topLeftX, topLeftY, size) {
   const id = `${topLeftX}:${topLeftY}`
   if(!e.target.value) {
     this.setCharByKey(id, '')
-    if(this.state.writingDirection) {
-      this.placeField(x - size, y)
-    } else {
-      this.placeField(x, y - size)
-    }
     return
   }
   if(!validCharacters.test(c)) {

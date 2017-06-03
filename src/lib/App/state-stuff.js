@@ -16,6 +16,42 @@ export function clearAll() {
   }
 }
 
+export function placeRow(canvasX, canvasY, cb) {
+  if(!canvasX || !canvasY) return
+  const square = findSquare(this.ctx, canvasX, canvasY)
+  if (!square) return
+
+  const x           = square.topLeftX
+  const y           = square.topLeftY
+  const size        = square.size
+  const key         = `${x}:${y}`
+
+  // Set focus to field if it already exists
+  const existingField = this.state.fields.find((f) => {
+    return f.key === key
+  })
+  if(existingField) {
+    this.setFocusByKey(existingField.key)
+    return
+  }
+  const field = {
+    key:      key,
+    x:        x,
+    y:        y,
+    size:     size,
+    char:     '',
+    hasFocus: true
+  }
+  this.setState((prevState) => {
+    return {
+      fields: prevState.fields.concat(field)
+    }
+  }, () => {
+    saveState(this.state)
+    if(cb) return cb()
+  })
+}
+
 export function placeField(canvasX, canvasY, cb) {
   if(!canvasX || !canvasY) return
   const square = findSquare(this.ctx, canvasX, canvasY)
@@ -91,10 +127,9 @@ export function setWritingDirection(canvasX, canvasY, cb) {
   const x      = square.topLeftX
   const y      = square.topLeftY
   const size   = square.size
-  const { onHori, onVerti } = findHoriVerti(this.ctx, x, y, size)
-  const dir    = onHori
+  const { onHori } = findHoriVerti(this.ctx, x, y, size)
   this.setState((prevState) => {
-    return { writingDirection: dir }
+    return { writingDirection: onHori }
   }, () => {
     this.placeField(canvasX, canvasY, cb)
   })

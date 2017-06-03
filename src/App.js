@@ -13,7 +13,6 @@ import { placeField }          from './lib/App/state-stuff'
 import { setCharByKey }        from './lib/App/state-stuff'
 import { setFocusByKey }       from './lib/App/state-stuff'
 import { setWritingDirection } from './lib/App/state-stuff'
-import { imgToBase64 }         from './lib/utils/pixel-processing'
 import './App.css'
 
 class App extends Component {
