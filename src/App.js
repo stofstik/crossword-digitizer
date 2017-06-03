@@ -1,32 +1,34 @@
-import _                    from 'underscore'
-import store                from 'store'
-import React, { Component } from 'react'
-import { Button }           from './components/Button'
-import { CharInput }        from './components/CharInput'
-import { onKeyUp }          from './lib/App/handlers'
-import { onChange }         from './lib/App/handlers'
-import { onClick }          from './lib/App/handlers'
-import { onCharClick }      from './lib/App/handlers'
-import { clearAll }         from './lib/App/state-stuff'
-import { placeField }       from './lib/App/state-stuff'
-import { setCharByKey }     from './lib/App/state-stuff'
-import { setFocusByKey }    from './lib/App/state-stuff'
+import _                       from 'underscore'
+import store                   from 'store'
+import React, { Component }    from 'react'
+import { Button }              from './components/Button'
+import { CharInput }           from './components/CharInput'
+import { onKeyUp }             from './lib/App/handlers'
+import { onChange }            from './lib/App/handlers'
+import { onClick }             from './lib/App/handlers'
+import { onCharClick }         from './lib/App/handlers'
+import { clearAll }            from './lib/App/state-stuff'
+import { placeField }          from './lib/App/state-stuff'
+import { setCharByKey }        from './lib/App/state-stuff'
+import { setFocusByKey }       from './lib/App/state-stuff'
+import { setWritingDirection } from './lib/App/state-stuff'
 import './App.css'
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = store.get('app-state') || { fields: [], writingDirection: true}
-    // App Handlers
-    this.onKeyUp       = onKeyUp.bind(this)
-    this.onChange      = onChange.bind(this)
-    this.onClick       = onClick.bind(this)
-    this.onCharClick   = onCharClick.bind(this)
-    // App State changers
-    this.clearAll      = clearAll.bind(this)
-    this.placeField    = placeField.bind(this)
-    this.setCharByKey  = setCharByKey.bind(this)
-    this.setFocusByKey = setFocusByKey.bind(this)
+    // Handlers
+    this.onKeyUp             = onKeyUp.bind(this)
+    this.onChange            = onChange.bind(this)
+    this.onClick             = onClick.bind(this)
+    this.onCharClick         = onCharClick.bind(this)
+    // State changers
+    this.clearAll            = clearAll.bind(this)
+    this.placeField          = placeField.bind(this)
+    this.setCharByKey        = setCharByKey.bind(this)
+    this.setFocusByKey       = setFocusByKey.bind(this)
+    this.setWritingDirection = setWritingDirection.bind(this)
   }
 
   componentDidMount() {

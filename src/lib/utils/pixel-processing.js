@@ -80,8 +80,8 @@ export function findHoriVerti(ctx, topLeftX, topLeftY, size) {
   const bottom  = !!findSquare(ctx, x, y + size)
   const right   = !!findSquare(ctx, x + size, y)
   const left    = !!findSquare(ctx, x - size, y)
-  const onHori  = left || right
-  const onVerti = top  || bottom
+  const onHori  = (left && right)  || right
+  const onVerti = (top  && bottom) || bottom
   console.log('top', top)
   console.log('bottom', bottom)
   console.log('left', left)

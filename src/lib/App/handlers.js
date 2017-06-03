@@ -7,27 +7,37 @@ export function onKeyUp(e, topLeftX, topLeftY, size) {
   const x      = topLeftX + offset
   const y      = topLeftY + offset
   // Go to input field top
-  if(e.key === 'ArrowUp') {
+  // if(e.key === 'ArrowUp') {
+    // e.preventDefault()
+    // this.placeField(x, y - size)
+    // return
+  // }
+  // // Go to input field right
+  // if(e.keyCode === 32  || e.key === 'ArrowRight') {
+    // e.preventDefault()
+    // this.placeField(x + size, y)
+    // return
+  // }
+  // // Go to input field below
+  // if(e.key === 'Enter' || e.key === 'ArrowDown') {
+    // e.preventDefault()
+    // this.placeField(x, y + size)
+    // return
+  // }
+  // // Go to input field left
+  // if(e.key === 'ArrowLeft') {
+    // e.preventDefault()
+    // this.placeField(x - size, y)
+    // return
+  // }
+  // Go to input field back up, or left ; )
+  if(e.keyCode === 8) {
     e.preventDefault()
-    this.placeField(x, y - size)
-    return
-  }
-  // Go to input field right
-  if(e.keyCode === 32  || e.key === 'ArrowRight') {
-    e.preventDefault()
-    this.placeField(x + size, y)
-    return
-  }
-  // Go to input field below
-  if(e.key === 'Enter' || e.key === 'ArrowDown') {
-    e.preventDefault()
-    this.placeField(x, y + size)
-    return
-  }
-  // Go to input field left
-  if(e.keyCode === 8   || e.key === 'ArrowLeft') {
-    e.preventDefault()
-    this.placeField(x - size, y)
+    if(this.state.writingDirection) {
+      this.placeField(x - size, y)
+    } else {
+      this.placeField(x, y - size)
+    }
     return
   }
 }
@@ -64,12 +74,14 @@ export function onChange(e, topLeftX, topLeftY, size) {
 
 export function onCharClick(e, x, y) {
   const id = `${x}:${y}`
-  this.setFocusByKey(id)
+  this.setWritingDirection(x, y, () => {
+    this.setFocusByKey(id)
+  })
 }
 
 export function onClick(e) {
   const rect = this.canvas.getBoundingClientRect()
   const canvasX = e.clientX - rect.left
   const canvasY = e.clientY - rect.top
-  this.placeField(canvasX, canvasY)
+  this.setWritingDirection(canvasX, canvasY)
 }
