@@ -103,3 +103,13 @@ export function isBlack(color) {
     color[3] === 255
   return bool;
 }
+
+export function imgToBase64(img) {
+  let   imgCanvas = document.createElement('canvas')
+  const imgCtx    = imgCanvas.getContext('2d')
+  imgCanvas.width  = img.width
+  imgCanvas.height = img.height
+  imgCtx.drawImage(img, 0, 0)
+  const dataURL    = imgCanvas.toDataURL("image/png")
+  return dataURL.replace(/^data:image\/(png|jpg);base64,/, '')
+}

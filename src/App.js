@@ -12,6 +12,7 @@ import { placeField }          from './lib/App/state-stuff'
 import { setCharByKey }        from './lib/App/state-stuff'
 import { setFocusByKey }       from './lib/App/state-stuff'
 import { setWritingDirection } from './lib/App/state-stuff'
+import { imgToBase64 }         from './lib/utils/pixel-processing'
 import './App.css'
 
 class App extends Component {
@@ -23,6 +24,7 @@ class App extends Component {
     this.onChange            = onChange.bind(this)
     this.onClick             = onClick.bind(this)
     this.onCharClick         = onCharClick.bind(this)
+    this.yolo                = this.yolo.bind(this)
     // State changers
     this.clearAll            = clearAll.bind(this)
     this.placeField          = placeField.bind(this)
@@ -34,8 +36,12 @@ class App extends Component {
   componentDidMount() {
     this.canvas = document.getElementById('canvas')
     this.ctx    = this.canvas.getContext('2d')
+    this.updateCanvas()
+  }
+
+  updateCanvas() {
     const img   = new Image()
-    img.src     = 'crypto2.png'
+    img.src     = store.get('image')
     img.onload  = () => {
       this.setState({
         width:  img.width,
@@ -65,6 +71,20 @@ class App extends Component {
     })
   }
 
+  yolo(e) {
+    console.log("e", e.target.files[0])
+    const file   = e.target.files[0]
+    const reader = new FileReader()
+    reader.onload = ((aImg) => {
+      return (e) => {
+        store.set('image', e.target.result)
+        this.updateCanvas()
+      }
+    })()
+    reader.readAsDataURL(file)
+
+  }
+
   render() {
     const style = {
       width: this.state.width,
@@ -74,6 +94,7 @@ class App extends Component {
       <div className="App">
         <div className="app-container">
           <div className="action-bar">
+            <input onChange={ this.yolo } ref="imgUpload" id="imgUpload" name="img" type="file" accept="image/*" />
             <Button buttonCSS="delete-button" onClick={ this.clearAll } icon="delete_forever" />
           </div>
           <div style={ style } className="canvas-container">
