@@ -112,7 +112,6 @@ export function isLight(color) {
 }
 
 export function isDark(color) {
-  console.log("color", color)
   const bool =
     color[0] < 220 &&
     color[1] < 220 &&

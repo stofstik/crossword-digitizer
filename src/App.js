@@ -77,14 +77,17 @@ class App extends Component {
 
   render() {
     const style = {
-      width: this.state.width,
+      width:  this.state.width,
       height: this.state.height
     }
     return (
       <div className="App">
         <div className="app-container">
           <div className="action-bar">
-            <input onChange={ this.onFileInputChange } ref="Upload" id="upload" name="img" type="file" accept="image/*" />
+            <input onChange={ this.onFileInputChange } ref="Upload" id="upload-button" name="upload-button[]" type="file" accept="image/*" />
+            <label htmlFor="upload-button">
+              <Button buttonCSS="upload-button" icon="file_upload" />
+            </label>
             <Button buttonCSS="delete-button" onClick={ this.clearAll } icon="delete_forever" />
           </div>
           <div style={ style } className="canvas-container">

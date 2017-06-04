@@ -1,9 +1,8 @@
-@import url('https://fonts.googleapis.com/css?family=Pangolin');
+@import url('https://fonts.googleapis.com/css?family=Shadows+Into+Light+Two');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 .App {
   background: lightblue;
-  font-family: 'Pangolin', cursive;
 }
 
 .action-bar {
@@ -40,6 +39,12 @@
   right: 0;
 }
 
+.upload-button {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
 .canvas-container {
   position: relative;
   margin-left: auto;
@@ -59,7 +64,6 @@
   font-size: 18pt;
   /* background: rgba(179, 229, 252, 0.5); */
   background: rgba(0, 0, 0, 0.0);
-  font-weight: bold;
   border-radius: 10;
   display: block;
   border-radius:5px;
@@ -68,7 +72,11 @@
   position: absolute;
   text-align: center;
   text-transform: uppercase;
-  font-family: 'Pangolin', cursive;
+  font-family: 'Shadows Into Light Two', cursive;
+}
+
+.char-input::selection {
+  background-color: rgba(179, 229, 252, 1);
 }
 
 .char-input.highlighted {
@@ -80,6 +88,7 @@
 
 }
 
-#upload text-area {
-  display: hidden
+#upload-button {
+  display: none;
+  z-index: -1;
 }
