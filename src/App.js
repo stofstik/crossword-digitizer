@@ -84,7 +84,7 @@ class App extends Component {
       <div className="App">
         <div className="app-container">
           <div className="action-bar">
-            <input onChange={ this.onFileInputChange } ref="imgUpload" id="imgUpload" name="img" type="file" accept="image/*" />
+            <input onChange={ this.onFileInputChange } ref="Upload" id="upload" name="img" type="file" accept="image/*" />
             <Button buttonCSS="delete-button" onClick={ this.clearAll } icon="delete_forever" />
           </div>
           <div style={ style } className="canvas-container">
