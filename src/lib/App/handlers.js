@@ -1,5 +1,6 @@
-import { validCharacters }  from '../utils/text-stuff'
-import store from 'store'
+import { validCharacters } from '../utils/text-stuff'
+import store               from 'store'
+import pdfjs               from 'pdfjs-dist'
 
 export function onKeyUp(e, topLeftX, topLeftY, size) {
   const offset = size / 2
@@ -57,12 +58,36 @@ export function onClick(e) {
 export function onFileInputChange(e) {
   const file    = e.target.files[0]
   const reader  = new FileReader()
+  console.log(file)
+  if(file.type === 'application/pdf') {
+    console.log("handling pdf")
+  }
   reader.onload = ((aImg) => {
     return (e) => {
-      store.set('image', e.target.result)
-      store.set('app-state', '')
-      this.updateCanvas()
-      this.setState({ fields: [], writingDirection: true})
+      pdfjs.getDocument(e.target.result).then((pdf) =>{
+        console.log('pdf:', pdf)
+        pdf.getPage(1).then((page) => {
+          const width    = 600
+          const viewport = page.getViewport(1)
+          const scale    = width / viewport.width
+          const scaledViewport = page.getViewport(scale)
+          const canvas = document.createElement('canvas')
+          canvas.width  = scaledViewport.width
+          canvas.height  = scaledViewport.height
+          // const canvas = document.getElementById('canvas')
+          const ctx    = canvas.getContext('2d')
+          const renderCtx = { canvasContext: ctx, viewport: scaledViewport }
+          page.render(renderCtx)
+
+          const image = canvas.toDataURL("image/png")
+          console.log("image", image)
+          store.set('image', image)
+          this.setState({ fields: [], writingDirection: true})
+          store.set('app-state', '')
+          this.updateCanvas()
+
+        })
+      })
     }
   })()
   reader.readAsDataURL(file)

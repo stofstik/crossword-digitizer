@@ -43,9 +43,12 @@ class App extends Component {
     const img   = new Image()
     img.src     = store.get('image')
     img.onload  = () => {
-      const ratio = 1000 / img.width
+      const ratio = window.innerWidth / img.width
       const width  = img.width  * ratio
+      console.log("img.width", img.width)
       const height = img.height * ratio
+      console.log("img.height", img.height)
+      console.log("img", img)
 
       this.setState({
         width:  width,
@@ -56,6 +59,10 @@ class App extends Component {
         this.ctx.drawImage(img, 0, 0, width, height)
       })
     }
+  }
+
+  pdfToImg() {
+    console.log("pdfToImg")
   }
 
   renderCharInputs() {
@@ -84,7 +91,7 @@ class App extends Component {
       <div className="App">
         <div className="app-container">
           <div className="action-bar">
-            <input onChange={ this.onFileInputChange } ref="Upload" id="upload-button" name="upload-button[]" type="file" accept="image/*" />
+            <input onChange={ this.onFileInputChange } ref="Upload" id="upload-button" name="upload-button[]" type="file" accept="application/pdf,image/*" />
             <label htmlFor="upload-button">
               <Button buttonCSS="upload-button" icon="file_upload" />
             </label>
