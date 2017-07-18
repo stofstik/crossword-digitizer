@@ -64,31 +64,32 @@ export function onFileInputChange(e) {
   }
   reader.onload = ((aImg) => {
     return (e) => {
-      pdfjs.getDocument(e.target.result).then((pdf) =>{
-        console.log('pdf:', pdf)
-        pdf.getPage(1).then((page) => {
+      pdfjs.getDocument(e.target.result)
+        .then( (pdf)  => {
+          return pdf.getPage(1)
+        .then( (page) => {
+          console.log("page", page)
           const width    = 600
           const viewport = page.getViewport(1)
-          const scale    = width / viewport.width
+          console.log("viewport", viewport)
+          const scale          = width / viewport.width
           const scaledViewport = page.getViewport(scale)
-          const canvas = document.createElement('canvas')
-          canvas.width  = scaledViewport.width
-          canvas.height  = scaledViewport.height
+          this.canvas.width    = scaledViewport.width
+          this.canvas.height   = scaledViewport.height
           // const canvas = document.getElementById('canvas')
-          const ctx    = canvas.getContext('2d')
-          const renderCtx = { canvasContext: ctx, viewport: scaledViewport }
-          page.render(renderCtx)
-
-          const image = canvas.toDataURL("image/png")
+          const renderCtx = { canvasContext: this.ctx, viewport: scaledViewport }
+          return page.render(renderCtx).promise
+        .then( () => {
+          console.log(this.canvas.toDataURL('image/png'));
+          const image = this.canvas.toDataURL("image/png")
           console.log("image", image)
           store.set('image', image)
           this.setState({ fields: [], writingDirection: true})
           store.set('app-state', '')
           this.updateCanvas()
-
         })
       })
-    }
-  })()
-  reader.readAsDataURL(file)
+    })
+  }})()
+  reader.readAsArrayBuffer(file)
 }
