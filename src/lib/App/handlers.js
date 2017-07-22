@@ -58,7 +58,7 @@ export function onClick(e) {
 export function onFileInputChange(e) {
   const file    = e.target.files[0]
   const reader  = new FileReader()
-  console.log(file)
+  console.log("file", file)
   if(file.type === 'application/pdf') {
 		reader.onload = ((aImg) => {
 			return (e) => {
@@ -83,7 +83,8 @@ export function onFileInputChange(e) {
 					})
 				})
 			})
-		}})()
-		reader.readAsArrayBuffer(file)
+		}})
+		return reader.readAsArrayBuffer(file)
 	}
+
 }
