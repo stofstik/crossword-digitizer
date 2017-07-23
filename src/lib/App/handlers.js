@@ -62,32 +62,39 @@ export function onFileInputChange(e) {
     console.log("file.type", file.type)
   }
   if(file.type === 'application/pdf') {
-		reader.onload = ((aImg) => {
-			return (e) => {
-				pdfjs.getDocument(e.target.result)
-					.then( (pdf)  => {
-						return pdf.getPage(1)
-					.then( (page) => {
-						const width          = window.innerWidth
-						const viewport       = page.getViewport(1)
-						const scale          = width / viewport.width
-						const scaledViewport = page.getViewport(scale)
-						this.canvas.width    = scaledViewport.width
-						this.canvas.height   = scaledViewport.height
-						const renderCtx      = { canvasContext: this.ctx, viewport: scaledViewport }
-						return page.render(renderCtx).promise
-					.then( () => {
-						const image = this.canvas.toDataURL("image/png")
-						store.set('image', image)
-						this.setState({ fields: [], writingDirection: true})
-						store.set('app-state', '')
-						this.updateCanvas()
-					})
-				})
-			})
-		}})()
-		return reader.readAsArrayBuffer(file)
-	}
+    if(!confirm("Using pdf files is still expirimental. Would you like to try anyway?")) return
+    reader.onload = ( (aImg) => {
+      return (e) => {
+        pdfjs.getDocument(e.target.result)
+          .then( (pdf)  => {
+            return pdf.getPage(1)
+          })
+          .then( (page) => {
+            const width          = window.innerWidth
+            const viewport       = page.getViewport(1)
+            console.log("viewport", viewport)
+            const scale          = width / viewport.width
+            const scaledViewport = page.getViewport(scale)
+            console.log("scaledViewport", scaledViewport)
+            this.canvas.width    = scaledViewport.width
+            this.canvas.height   = scaledViewport.height
+            const renderCtx      = { canvasContext: this.ctx, viewport: scaledViewport }
+            return page.render(renderCtx).promise
+          })
+          .then( () => {
+            const image = this.canvas.toDataURL("image/png")
+            store.set('image', image)
+            this.setState({ fields: [], writingDirection: true})
+            store.set('app-state', '')
+            this.updateCanvas()
+          })
+          .catch( (error) => {
+            console.log("error", error)
+          })
+      }
+    })()
+    return reader.readAsArrayBuffer(file)
+  }
   reader.onload = ((aImg) => {
     return (e) => {
       store.set('image', e.target.result)
