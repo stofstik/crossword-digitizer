@@ -55,15 +55,17 @@ export function onClick(e) {
   this.setWritingDirection(canvasX, canvasY)
 }
 
-export function onFileInputChange(e) {
-  const file    = e.target.files[0]
+export function onFileInputChange(event) {
+  event.preventDefault()
+  const file    = event.target.files[0]
   const reader  = new FileReader()
-  if(file.type) {
-    console.log("file.type", file.type)
-  }
+  if(file.type) console.log("file.type", file.type)
   if(file.type === 'application/pdf') {
-    if(!confirm("Using pdf files is still expirimental. Would you like to try anyway?")) return
-    reader.onload = ( (aImg) => {
+    if(!confirm("Using pdf files is still expirimental. Would you like to try anyway?")) {
+      event.target.value = null
+      return
+    }
+    reader.onload = ( () => {
       return (e) => {
         pdfjs.getDocument(e.target.result)
           .then( (pdf)  => {
@@ -72,10 +74,8 @@ export function onFileInputChange(e) {
           .then( (page) => {
             const width          = window.innerWidth
             const viewport       = page.getViewport(1)
-            console.log("viewport", viewport)
             const scale          = width / viewport.width
             const scaledViewport = page.getViewport(scale)
-            console.log("scaledViewport", scaledViewport)
             this.canvas.width    = scaledViewport.width
             this.canvas.height   = scaledViewport.height
             const renderCtx      = { canvasContext: this.ctx, viewport: scaledViewport }
@@ -87,9 +87,13 @@ export function onFileInputChange(e) {
             this.setState({ fields: [], writingDirection: true})
             store.set('app-state', '')
             this.updateCanvas()
+            return null
           })
           .catch( (error) => {
             console.log("error", error)
+          })
+          .finally( () => {
+            event.target.value = null
           })
       }
     })()
@@ -101,6 +105,7 @@ export function onFileInputChange(e) {
       store.set('app-state', '')
       this.updateCanvas()
       this.setState({ fields: [], writingDirection: true})
+      event.target.value = null
     }
   })()
   return reader.readAsDataURL(file)

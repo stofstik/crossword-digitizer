@@ -1,4 +1,5 @@
 import _                       from 'underscore'
+import bluebird                from 'bluebird'
 import store                   from 'store'
 import React, { Component }    from 'react'
 import { Button }              from './components/Button'
@@ -15,9 +16,11 @@ import { setFocusByKey }       from './lib/App/state-stuff'
 import { setWritingDirection } from './lib/App/state-stuff'
 import './App.css'
 
+
 class App extends Component {
   constructor(props) {
     super(props)
+    global.Promise = bluebird.Promise
     this.state = store.get('app-state') || { fields: [], writingDirection: true}
     // Handlers
     this.onKeyUp             = onKeyUp.bind(this)
@@ -59,10 +62,6 @@ class App extends Component {
         this.ctx.drawImage(img, 0, 0, width, height)
       })
     }
-  }
-
-  pdfToImg() {
-    console.log("pdfToImg")
   }
 
   renderCharInputs() {
