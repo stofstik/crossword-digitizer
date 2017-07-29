@@ -57,6 +57,7 @@ export function onClick(e) {
 
 export function onFileInputChange(event) {
   event.preventDefault()
+  event.persist()
   const file    = event.target.files[0]
   const reader  = new FileReader()
   if(file.type) console.log("file.type", file.type)
@@ -65,8 +66,7 @@ export function onFileInputChange(event) {
       event.target.value = null
       return
     }
-    reader.onload = ( () => {
-      return (e) => {
+    reader.onload = (e) => {
         pdfjs.getDocument(e.target.result)
           .then( (pdf)  => {
             return pdf.getPage(1)
@@ -96,17 +96,14 @@ export function onFileInputChange(event) {
             event.target.value = null
           })
       }
-    })()
     return reader.readAsArrayBuffer(file)
   }
-  reader.onload = ((aImg) => {
-    return (e) => {
+  reader.onload = (e) => {
       store.set('image', e.target.result)
       store.set('app-state', '')
       this.updateCanvas()
       this.setState({ fields: [], writingDirection: true})
       event.target.value = null
     }
-  })()
   return reader.readAsDataURL(file)
 }
