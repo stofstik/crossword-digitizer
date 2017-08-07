@@ -2,7 +2,7 @@
   "name": "crossword-digitizer",
   "version": "0.1.2",
   "private": true,
-  "homepage": "https://stofstik.github.io/",
+  "homepage": "https://stofstik.github.io/crossword-digitizer/",
   "dependencies": {
     "bluebird": "^3.5.0",
     "pdfjs-dist": "^1.8.562",
