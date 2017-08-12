@@ -16,39 +16,12 @@ export function clearAll() {
   }
 }
 
-export function placeRow(canvasX, canvasY, cb) {
-  if(!canvasX || !canvasY) return
-  const square = findSquare(this.ctx, canvasX, canvasY)
-  if (!square) return
-
-  const x           = square.topLeftX
-  const y           = square.topLeftY
-  const size        = square.size
-  const key         = `${x}:${y}`
-
-  // Set focus to field if it already exists
-  const existingField = this.state.fields.find((f) => {
-    return f.key === key
-  })
-  if(existingField) {
-    this.setFocusByKey(existingField.key)
-    return
-  }
-  const field = {
-    key:      key,
-    x:        x,
-    y:        y,
-    size:     size,
-    char:     '',
-    hasFocus: true
-  }
-  this.setState((prevState) => {
-    return {
-      fields: prevState.fields.concat(field)
-    }
-  }, () => {
-    saveState(this.state)
-    if(cb) return cb()
+function isExisting(fields, x, y) {
+  return fields.find((f) => {
+    const margin = 5
+    const isWithinX = ( x - margin ) <= f.x && ( x + margin ) >= f.x
+    const isWithinY = ( y - margin ) <= f.y && ( y + margin ) >= f.y
+    return isWithinX && isWithinY
   })
 }
 
@@ -57,15 +30,13 @@ export function placeField(canvasX, canvasY, cb) {
   const square = findSquare(this.ctx, canvasX, canvasY)
   if (!square) return
 
-  const x           = square.topLeftX
-  const y           = square.topLeftY
-  const size        = square.size
-  const key         = `${x}:${y}`
+  const x    = square.topLeftX
+  const y    = square.topLeftY
+  const size = square.size
+  const key  = `${x}:${y}`
 
-  // Set focus to field if it already exists
-  const existingField = this.state.fields.find((f) => {
-    return f.key === key
-  })
+  const existingField = isExisting(this.state.fields, x, y)
+
   if(existingField) {
     this.setFocusByKey(existingField.key)
     return

@@ -3,8 +3,8 @@
  */
 export function findSquare(ctx, x, y) {
   let color    = ctx.getImageData(x, y, 1, 1).data
-  const DISTANCE = 40
-  const OFFSET   = DISTANCE / 4
+  const DISTANCE = 100
+  const OFFSET   = 2
   if(!isLight(color)) {
     console.info('Not a white pixel : (')
     return
@@ -77,6 +77,22 @@ export function findSquare(ctx, x, y) {
     size:     width
   }
 }
+
+export function recalculateFields(fields, ratio) {
+    return fields.map((f) => {
+      const x    = f.x * ratio
+      const y    = f.y * ratio
+      const size = f.size * ratio
+      const key  = `${x}:${y}`
+      const update = {
+        key:      key,
+        x:        x,
+        y:        y,
+        size:     size,
+      }
+      return Object.assign({}, f, update)
+    })
+  }
 
 export function findHoriVerti(ctx, topLeftX, topLeftY, size) {
   const offset  = size / 2

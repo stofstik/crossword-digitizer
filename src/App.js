@@ -1,16 +1,18 @@
+import React, { Component }    from 'react'
 import _                       from 'underscore'
 import bluebird                from 'bluebird'
 import store                   from 'store'
-import React, { Component }    from 'react'
 import { Button }              from './components/Button'
 import { CharInput }           from './components/CharInput'
-import { onKeyUp }             from './lib/App/handlers'
 import { onChange }            from './lib/App/handlers'
-import { onClick }             from './lib/App/handlers'
 import { onCharClick }         from './lib/App/handlers'
+import { onClick }             from './lib/App/handlers'
 import { onFileInputChange }   from './lib/App/handlers'
+import { onKeyUp }             from './lib/App/handlers'
+import { recalculateFields }   from './lib/utils/pixel-processing'
 import { clearAll }            from './lib/App/state-stuff'
 import { placeField }          from './lib/App/state-stuff'
+import { saveState }           from './lib/App/state-stuff'
 import { setCharByKey }        from './lib/App/state-stuff'
 import { setFocusByKey }       from './lib/App/state-stuff'
 import { setWritingDirection } from './lib/App/state-stuff'
@@ -21,19 +23,23 @@ class App extends Component {
   constructor(props) {
     super(props)
     global.Promise = bluebird.Promise
-    this.state = store.get('app-state') || { fields: [], writingDirection: true}
     // Handlers
-    this.onKeyUp             = onKeyUp.bind(this)
     this.onChange            = onChange.bind(this)
-    this.onClick             = onClick.bind(this)
     this.onCharClick         = onCharClick.bind(this)
+    this.onClick             = onClick.bind(this)
     this.onFileInputChange   = onFileInputChange.bind(this)
+    this.onKeyUp             = onKeyUp.bind(this)
+    // Pixel processing
+    this.recalculateFields   = recalculateFields.bind(this)
     // State changers
     this.clearAll            = clearAll.bind(this)
     this.placeField          = placeField.bind(this)
+    this.saveState           = saveState.bind(this)
     this.setCharByKey        = setCharByKey.bind(this)
     this.setFocusByKey       = setFocusByKey.bind(this)
     this.setWritingDirection = setWritingDirection.bind(this)
+
+    this.state = store.get('app-state') || { fields: [], writingDirection: true}
   }
 
   componentDidMount() {
@@ -46,20 +52,23 @@ class App extends Component {
     const img   = new Image()
     img.src     = store.get('image')
     img.onload  = () => {
-      const ratio = window.innerWidth / img.width
-      const width  = img.width  * ratio
-      console.log("img.width", img.width)
-      const height = img.height * ratio
-      console.log("img.height", img.height)
-      console.log("img", img)
+      // Calculate canvas size using window width
+      const windowWidth = window.innerWidth
+      const imgRatio    = windowWidth / img.width
+      const width       = img.width  * imgRatio
+      const height      = img.height * imgRatio
+      const windowRatio = windowWidth / (this.state.windowWidth || 1)
 
       this.setState({
+        windowWidth: windowWidth,
+        fields: this.recalculateFields(this.state.fields, windowRatio),
         width:  width,
         height: height
       }, () => {
         this.canvas.width  = width
         this.canvas.height = height
         this.ctx.drawImage(img, 0, 0, width, height)
+        this.saveState(this.state)
       })
     }
   }
