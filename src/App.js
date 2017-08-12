@@ -4,6 +4,7 @@ import bluebird                from 'bluebird'
 import store                   from 'store'
 import { Button }              from './components/Button'
 import { CharInput }           from './components/CharInput'
+import { ChooseFilePrompt }    from './components/ChooseFilePrompt'
 import { LoadingSpinner }      from './components/LoadingSpinner'
 import { onChange }            from './lib/App/handlers'
 import { onCharClick }         from './lib/App/handlers'
@@ -107,6 +108,7 @@ class App extends Component {
             </label>
             <Button buttonCSS="delete-button" onClick={ this.clearAll } icon="delete_forever" />
           </div>
+          <ChooseFilePrompt />
 
           {
             this.state.loading ?
