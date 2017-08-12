@@ -4,6 +4,7 @@ import bluebird                from 'bluebird'
 import store                   from 'store'
 import { Button }              from './components/Button'
 import { CharInput }           from './components/CharInput'
+import { LoadingSpinner }      from './components/LoadingSpinner'
 import { onChange }            from './lib/App/handlers'
 import { onCharClick }         from './lib/App/handlers'
 import { onClick }             from './lib/App/handlers'
@@ -16,8 +17,8 @@ import { saveState }           from './lib/App/state-stuff'
 import { setCharByKey }        from './lib/App/state-stuff'
 import { setFocusByKey }       from './lib/App/state-stuff'
 import { setWritingDirection } from './lib/App/state-stuff'
-import './App.css'
 
+import './App.css'
 
 class App extends Component {
   constructor(props) {
@@ -93,7 +94,8 @@ class App extends Component {
   render() {
     const style = {
       width:  this.state.width,
-      height: this.state.height
+      height: this.state.height,
+      display: this.state.loading ? 'none' : 'block'
     }
     return (
       <div className="App">
@@ -105,6 +107,14 @@ class App extends Component {
             </label>
             <Button buttonCSS="delete-button" onClick={ this.clearAll } icon="delete_forever" />
           </div>
+
+          {
+            this.state.loading ?
+              ( <LoadingSpinner /> )
+            :
+              null
+          }
+
           <div style={ style } className="canvas-container">
             <canvas
               className="canvas"

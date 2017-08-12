@@ -60,7 +60,7 @@ export function onFileInputChange(event) {
   event.persist()
   const file    = event.target.files[0]
   const reader  = new FileReader()
-  if(file.type) console.log("file.type", file.type)
+  this.setState({ loading: true })
   if(file.type === 'application/pdf') {
     if(!confirm("Using pdf files is still expirimental. Would you like to try anyway?")) {
       event.target.value = null
@@ -84,7 +84,7 @@ export function onFileInputChange(event) {
           .then( () => {
             const image = this.canvas.toDataURL("image/png")
             store.set('image', image)
-            this.setState({ fields: [], writingDirection: true})
+            this.setState({ loading: false, fields: [], writingDirection: true})
             store.set('app-state', '')
             this.updateCanvas()
             return null
@@ -102,7 +102,7 @@ export function onFileInputChange(event) {
       store.set('image', e.target.result)
       store.set('app-state', '')
       this.updateCanvas()
-      this.setState({ fields: [], writingDirection: true})
+      this.setState({ loading: false, fields: [], writingDirection: true})
       event.target.value = null
     }
   return reader.readAsDataURL(file)
