@@ -1,6 +1,6 @@
 {
   "name": "crossword-digitizer",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "private": true,
   "homepage": "https://stofstik.github.io/crossword-digitizer/",
   "dependencies": {
