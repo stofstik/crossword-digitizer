@@ -93,10 +93,11 @@ class App extends Component {
   }
 
   render() {
+    const { width, height, loading } = this.state
     const style = {
-      width:  this.state.width,
-      height: this.state.height,
-      display: this.state.loading ? 'none' : 'block'
+      width:  width,
+      height: height,
+      display: loading ? 'none' : 'block'
     }
     return (
       <div className="App">
@@ -108,10 +109,17 @@ class App extends Component {
             </label>
             <Button buttonCSS="delete-button" onClick={ this.clearAll } icon="delete_forever" />
           </div>
-          <ChooseFilePrompt />
 
           {
-            this.state.loading ?
+            !width && !height && !loading ?
+              ( <ChooseFilePrompt />)
+            :
+              null
+          }
+
+
+          {
+            loading ?
               ( <LoadingSpinner /> )
             :
               null
