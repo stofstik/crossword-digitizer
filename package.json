@@ -2,10 +2,10 @@
   "name": "crossword-digitizer",
   "version": "0.1.5",
   "private": true,
-  "homepage": "https://stofstik.github.io/crossword-digitizer/",
+  "homepage": "https://swapscaps.github.io/crossword-digitizer/",
   "dependencies": {
     "bluebird": "^3.5.0",
-    "pdfjs-dist": "^1.8.562",
+    "pdfjs-dist": "^1.9.628",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "store": "^2.0.4",
