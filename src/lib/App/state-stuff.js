@@ -1,3 +1,4 @@
+import _                 from 'underscore'
 import store             from 'store'
 import { findSquare }    from '../utils/pixel-processing'
 import { findHoriVerti } from '../utils/pixel-processing'
@@ -5,13 +6,14 @@ import { findHoriVerti } from '../utils/pixel-processing'
 export function saveState(state) {
   store.set('app-state', state)
 }
+const debouncedSaveState = _.debounce(saveState, 1000)
 
 export function clearAll() {
-  if(confirm('Clear all?')) {
+  if(confirm('Clear all fields?')) {
     this.setState({
       fields: []
     }, () => {
-      saveState(this.state)
+      debouncedSaveState(this.state)
     })
   }
 }
@@ -54,7 +56,7 @@ export function placeField(canvasX, canvasY, cb) {
       fields: prevState.fields.concat(field)
     }
   }, () => {
-    saveState(this.state)
+    debouncedSaveState(this.state)
     if(cb) return cb()
   })
 }
@@ -70,7 +72,7 @@ export function setCharByKey(key, char, cb) {
       })
     }
   }, () => {
-    saveState(this.state)
+    debouncedSaveState(this.state)
   })
 }
 
@@ -87,7 +89,7 @@ export function setFocusByKey(key, cb) {
       })
     }
   }, () => {
-    saveState(this.state)
+    debouncedSaveState(this.state)
     if(cb) return cb()
   })
 }
