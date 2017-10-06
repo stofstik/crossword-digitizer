@@ -52,6 +52,7 @@ export class CharInput extends Component {
       height: this.props.size,
       top:    this.props.top,
       left:   this.props.left,
+      fontSize: `${this.props.size / 2}pt`,
     }
     let className = "char-input"
     if(this.props.highlighted) {
