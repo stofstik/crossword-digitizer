@@ -12,7 +12,6 @@ export function findSquare(ctx, x, y) {
   const startX = x
   const startY = y
   let right, left, top, bottom
-  // Find right border first
   for(let x = 0; x < DISTANCE; x++) {
     const pos = startX + x
     color = ctx.getImageData(pos, startY, 1, 1).data
@@ -21,7 +20,6 @@ export function findSquare(ctx, x, y) {
       break
     }
   }
-  // Then find bottom border using right border's pos
   for(let y = 0; y < DISTANCE; y++) {
     const pos = startY + y
     color = ctx.getImageData(startX, pos, 1, 1).data
@@ -35,7 +33,6 @@ export function findSquare(ctx, x, y) {
     console.log("!right || !bottom", !right, !bottom)
     return null
   }
-  // Then left using bottom right
   for(let x = 0; x < DISTANCE; x++) {
     const pos = right - OFFSET - x
     color = ctx.getImageData(pos, bottom - OFFSET, 1, 1).data
@@ -44,7 +41,6 @@ export function findSquare(ctx, x, y) {
       break
     }
   }
-  // And lastly top using bottom right
   for(let y = 0; y < DISTANCE; y++) {
     const pos = bottom - OFFSET - y
     color = ctx.getImageData(right - OFFSET, pos, 1, 1).data

@@ -55,9 +55,9 @@ class App extends Component {
     img.src     = store.get('image')
     img.onload  = () => {
       // Calculate canvas size using window width
-      const windowWidth = window.innerWidth
+      const windowWidth = window.innerWidth - 16
       const imgRatio    = windowWidth / img.width
-      const width       = img.width  * imgRatio
+      const width       = windowWidth
       const height      = img.height * imgRatio
       const windowRatio = windowWidth / (this.state.windowWidth || 1)
 
@@ -67,8 +67,8 @@ class App extends Component {
         width:  width,
         height: height
       }, () => {
-        this.canvas.width  = 100
-        this.canvas.height = 100
+        this.canvas.width  = width
+        this.canvas.height = height
         this.ctx.drawImage(img, 0, 0, width, height)
         this.saveState(this.state)
       })
@@ -95,7 +95,7 @@ class App extends Component {
   render() {
     const { width, height, loading } = this.state
     const canvasContainerStyle = {
-      width:  '100vw',
+      width:  '100%',
       height: '100%',
       display: loading ? 'none' : 'block'
     }
@@ -127,7 +127,7 @@ class App extends Component {
               null
           }
 
-          <div style={ canvasContainerStyle } className="canvas-container">
+          <div id="canvas-container" style={ canvasContainerStyle } className="canvas-container">
             <canvas
               className="canvas"
               id="canvas"
