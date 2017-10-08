@@ -63,6 +63,14 @@ export function findSquare(ctx, x, y) {
     console.warn('Could not find center')
     return null
   }
+  const minHeight = height - DISTANCE / 10
+  const maxHeight = height + DISTANCE / 10
+  const minWidth = width - DISTANCE / 10
+  const maxWidth = width + DISTANCE / 10
+  if((width > maxHeight || width < minHeight) && (height > maxWidth || height < minWidth)) {
+    console.log('Not an equal square!')
+    return null
+  }
   return {
     topLeftX: left + 1,
     topLeftY: top + 1,
