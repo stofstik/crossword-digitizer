@@ -67,8 +67,8 @@ class App extends Component {
         width:  width,
         height: height
       }, () => {
-        this.canvas.width  = width
-        this.canvas.height = height
+        this.canvas.width  = 100
+        this.canvas.height = 100
         this.ctx.drawImage(img, 0, 0, width, height)
         this.saveState(this.state)
       })
@@ -94,25 +94,27 @@ class App extends Component {
 
   render() {
     const { width, height, loading } = this.state
-    const style = {
-      width:  width,
-      height: height,
+    const canvasContainerStyle = {
+      width:  '100vw',
+      height: '100%',
       display: loading ? 'none' : 'block'
     }
     return (
       <div className="App">
         <div className="app-container">
           <div className="action-bar">
-            <input onChange={ this.onFileInputChange } ref="Upload" id="upload-button" name="upload-button[]" type="file" accept="application/pdf,image/*" />
-            <label htmlFor="upload-button">
-              <Button buttonCSS="upload-button" icon="file_upload" />
-            </label>
+            <div className="upload-button-container">
+              <input onChange={ this.onFileInputChange } ref="Upload" id="upload-button" name="upload-button[]" type="file" accept="application/pdf,image/*" />
+              <label htmlFor="upload-button">
+                <Button buttonCSS="upload-button" icon="file_upload" />
+              </label>
+            </div>
             <Button buttonCSS="delete-button" onClick={ this.clearAll } icon="delete_forever" />
           </div>
 
           {
             !width && !height && !loading ?
-              ( <ChooseFilePrompt />)
+              <ChooseFilePrompt />
             :
               null
           }
@@ -125,7 +127,7 @@ class App extends Component {
               null
           }
 
-          <div style={ style } className="canvas-container">
+          <div style={ canvasContainerStyle } className="canvas-container">
             <canvas
               className="canvas"
               id="canvas"
