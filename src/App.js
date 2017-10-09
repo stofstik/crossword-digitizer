@@ -21,6 +21,8 @@ import { setWritingDirection } from './lib/App/state-stuff'
 
 import './App.css'
 
+const PADDING = 16
+
 class App extends Component {
   constructor(props) {
     super(props)
@@ -55,7 +57,7 @@ class App extends Component {
     img.src     = store.get('image')
     img.onload  = () => {
       // Calculate canvas size using window width
-      const windowWidth = window.innerWidth - 16
+      const windowWidth = window.innerWidth - PADDING
       const imgRatio    = windowWidth / img.width
       const width       = windowWidth
       const height      = img.height * imgRatio
@@ -84,7 +86,7 @@ class App extends Component {
           onClick={ this.onCharClick }
           key={ f.key }
           top={ f.y }
-          left={ f.x }
+          left={ f.x + ( PADDING / 2 ) }
           char={ f.char }
           hasFocus={ f.hasFocus }
           size={ f.size } />
