@@ -62,7 +62,7 @@ export function onFileInputChange(event) {
   const reader  = new FileReader()
   this.setState({ loading: true })
   if(file.type === 'application/pdf') {
-    if(!confirm("Using pdf files is still expirimental. Would you like to try anyway?")) {
+    if(!window.confirm("Using pdf files is still expirimental. Would you like to try anyway?")) {
       event.target.value = null
       return
     }

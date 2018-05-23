@@ -9,7 +9,7 @@ export function saveState(state) {
 const debouncedSaveState = _.debounce(saveState, 1000)
 
 export function clearAll() {
-  if(confirm('Clear all fields?')) {
+  if(window.confirm('Clear all fields?')) {
     this.setState({
       fields: []
     }, () => {
