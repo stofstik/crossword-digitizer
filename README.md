@@ -11,4 +11,4 @@ Check the source for all the weirdness. It can definitely be improved.
 Does not play well with iPhones. Try Chrome : )  
 It needs work in general actually, but did not find the time : p  
 
-https://stofstik.github.io/crossword-digitizer/
+https://swapscaps.github.io/crossword-digitizer/
